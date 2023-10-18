@@ -5,7 +5,6 @@ dataset:
   task: graph
   task_type: ranking
   transductive: False
-  dir: ../../predict-ai-model-runtime/npz_all/
 train:
   mode: custom_tpu
   batch_size: 32

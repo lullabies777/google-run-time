@@ -8,7 +8,7 @@ custom_metrics: []
 dataset:
   cache_load: false
   cache_save: false
-  dir: ../../predict-ai-model-runtime/npz_all/
+  dir: ./datasets
   edge_dim: 128
   edge_encoder: false
   edge_encoder_bn: true
