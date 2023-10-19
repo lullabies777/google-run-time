@@ -333,7 +333,6 @@ def eval_spearmanr(y_true, y_pred):
 
 def eval_opa(y_true, y_pred):
     num_preds = y_pred.shape[0]
-    print(y_pred.shape)
     i_idx = torch.arange(num_preds).repeat(num_preds)
     j_idx = torch.arange(num_preds).repeat_interleave(num_preds)
     pairwise_true = y_true[i_idx] > y_true[j_idx]

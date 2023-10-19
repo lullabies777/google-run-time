@@ -7,7 +7,7 @@ dataset:
   transductive: False
 train:
   mode: custom_tpu
-  batch_size: 32
+  batch_size: 64
   eval_period: 1
   ckpt_period: 100
   sampler: full_batch
@@ -31,7 +31,7 @@ gnn:
 optim:
   optimizer: adam
   base_lr: 0.0001
-  max_epoch: 20000
+  max_epoch: 600
 share:
   dim_in: 286
 device: cuda
