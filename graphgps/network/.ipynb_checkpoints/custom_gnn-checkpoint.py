@@ -1,5 +1,4 @@
 import torch
-from torch_geometric.graphgym.models.layer import SAGEConv, new_layer_config
 import torch_geometric.graphgym.models.head  # noqa, register module
 import torch_geometric.graphgym.register as register
 from torch_geometric.graphgym.config import cfg
@@ -8,9 +7,9 @@ from torch_geometric.graphgym.register import register_network
 
 from graphgps.layer.gatedgcn_layer import GatedGCNLayer
 from graphgps.layer.gine_conv_layer import GINEConvLayer
-from torch_geometric.graphgym.models.layer import MLP, new_layer_config
 
-@register_network('custom_tpu_gnn')
+
+@register_network('custom_gnn')
 class CustomGNN(torch.nn.Module):
     """
     GNN model that customizes the torch_geometric.graphgym.models.gnn.GNN
@@ -19,7 +18,6 @@ class CustomGNN(torch.nn.Module):
 
     def __init__(self, dim_in, dim_out):
         super().__init__()
-        dim_in = 128
         self.encoder = FeatureEncoder(dim_in)
         dim_in = self.encoder.dim_in
 
@@ -33,24 +31,21 @@ class CustomGNN(torch.nn.Module):
 
         conv_model = self.build_conv_model(cfg.gnn.layer_type)
         layers = []
-        layer_cfg = new_layer_config(dim_in, dim_in, 1, has_act=True, has_bias=True, cfg=cfg)
         for _ in range(cfg.gnn.layers_mp):
-            layers.append(conv_model(layer_cfg))
+            layers.append(conv_model(dim_in,
+                                     dim_in,
+                                     dropout=cfg.gnn.dropout,
+                                     residual=cfg.gnn.residual))
         self.gnn_layers = torch.nn.Sequential(*layers)
 
-        # GNNHead = register.head_dict[cfg.gnn.head]
-        # self.post_mp = GNNHead(dim_in=cfg.gnn.dim_inner, dim_out=dim_out)
-        self.layer_post_mp = MLP(
-            new_layer_config(128, dim_out, cfg.gnn.layers_post_mp,
-                             has_act=False, has_bias=True, cfg=cfg))
+        GNNHead = register.head_dict[cfg.gnn.head]
+        self.post_mp = GNNHead(dim_in=cfg.gnn.dim_inner, dim_out=dim_out)
 
     def build_conv_model(self, model_type):
         if model_type == 'gatedgcnconv':
             return GatedGCNLayer
         elif model_type == 'gineconv':
             return GINEConvLayer
-        elif model_type == 'sageconv':
-            return SAGEConv
         else:
             raise ValueError("Model {} unavailable".format(model_type))
 
