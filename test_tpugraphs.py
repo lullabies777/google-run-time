@@ -156,10 +156,10 @@ def preprocess_batch(batch, model, num_sample_configs):
     batch_list = batch.to_data_list()
     processed_batch_list = []
     for g in batch_list:
-        sample_idx = torch.randint(0, g.num_config.item(), (num_sample_configs,))
-        g.y = g.y[sample_idx]
-        g.config_feats = g.config_feats.view(g.num_config, g.num_config_idx, -1)[sample_idx, ...]
-        g.config_feats = g.config_feats.transpose(0,1)
+        # sample_idx = torch.randint(0, g.num_config.item(), (num_sample_configs,))
+        # g.y = g.y[sample_idx]
+        # g.config_feats = g.config_feats.view(g.num_config, g.num_config_idx, -1)[sample_idx, ...]
+        # g.config_feats = g.config_feats.transpose(0,1)
         g.config_feats_full = torch.zeros((g.num_nodes, num_sample_configs, g.config_feats.shape[-1]), device=g.config_feats.device)
         g.config_feats_full[g.config_idx, ...] += g.config_feats
         g.adj = SparseTensor(row=g.edge_index[0], col=g.edge_index[1], sparse_sizes=(g.num_nodes, g.num_nodes))
@@ -233,27 +233,33 @@ def eval_epoch(logger, loader, model, split='val'):
         res_list = torch.cat(res_list, dim=0)
         print(res_list.shape)
         logging.info(res_list.shape)
-        pred = torch.zeros(1, len(data.y), 1).to(torch.device(cfg.device))
+        pred = torch.zeros(len(batch_list), len(data.y), 1).to(torch.device(cfg.device))
         part_cnt = 0
         for i, num_parts in enumerate(batch_num_parts):
             for _ in range(num_parts):
                 for j in range(num_sample_config):
                     pred[i, j, :] += res_list[part_cnt, :]
                     part_cnt += 1
-        pred = pred.view(num_sample_config)
-        true = true.view(num_sample_config)
-        pred_rank = torch.argsort(pred, dim=-1, descending=False)
-        true_rank = torch.argsort(true, dim=-1, descending=False)
-        pred_rank = pred_rank.cpu().numpy()
-        true_rank = true_rank.cpu().numpy()
-        true = true.cpu().numpy()
-        err_1 = (true[pred_rank[0]] - true[true_rank[0]]) / true[true_rank[0]]
-        err_10 = (np.min(true[pred_rank[:10]]) - true[true_rank[0]]) / true[true_rank[0]]
-        err_100 = (np.min(true[pred_rank[:100]]) - true[true_rank[0]]) / true[true_rank[0]]
-        print('top 1 err: ' + str(err_1))
-        print('top 10 err: ' + str(err_10))
-        print('top 100 err: ' + str(err_100))
-        print("kendall:" + str(scipy.stats.kendalltau(pred_rank, true_rank).correlation))
+        ans = torch.argsort(pred, dim = 1).squeeze(-1)
+        predictions = ans.cpu().detach().numpy()
+        results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
+        df = pd.DataFrame(results)
+        df.to_csv('./results.csv')
+        
+        # pred = pred.view(num_sample_config)
+        # true = true.view(num_sample_config)
+        # pred_rank = torch.argsort(pred, dim=-1, descending=False)
+        # true_rank = torch.argsort(true, dim=-1, descending=False)
+        # pred_rank = pred_rank.cpu().numpy()
+        # true_rank = true_rank.cpu().numpy()
+        # true = true.cpu().numpy()
+        # err_1 = (true[pred_rank[0]] - true[true_rank[0]]) / true[true_rank[0]]
+        # err_10 = (np.min(true[pred_rank[:10]]) - true[true_rank[0]]) / true[true_rank[0]]
+        # err_100 = (np.min(true[pred_rank[:100]]) - true[true_rank[0]]) / true[true_rank[0]]
+        # print('top 1 err: ' + str(err_1))
+        # print('top 10 err: ' + str(err_10))
+        # print('top 100 err: ' + str(err_100))
+        # print("kendall:" + str(scipy.stats.kendalltau(pred_rank, true_rank).correlation))
         time_start = time.time()
 
 if __name__ == '__main__':
