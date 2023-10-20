@@ -7,7 +7,7 @@ dataset:
   transductive: False
 train:
   mode: custom_graph_segment_train
-  batch_size: 64
+  batch_size: 128
   eval_period: 1
   ckpt_period: 100
   sampler: full_batch

@@ -10,7 +10,6 @@ from graphgps.optimizer.extra_optimizers import ExtendedSchedulerConfig
 from torch_geometric.data import Batch
 from torch_geometric.graphgym.loss import compute_loss
 from torch_geometric.graphgym.checkpoint import load_ckpt
-from torch_geometric.graphgym.cmd_args import parse_args
 from torch_geometric.graphgym.config import (cfg, dump_cfg,
                                              set_cfg, load_cfg,
                                              makedirs_rm_exist)
@@ -30,10 +29,29 @@ from torch_sparse import SparseTensor
 from torch_geometric.data import Data
 import numpy as np
 import scipy
-
+from tqdm import tqdm
 from graphgps.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
 from graphgps.logger import create_logger
+
+import argparse
+
+
+def parse_args() -> argparse.Namespace:
+    r"""Parses the command line arguments."""
+    parser = argparse.ArgumentParser(description='GraphGym')
+
+    parser.add_argument('--cfg', dest='cfg_file', type=str, required=True,
+                        help='The configuration file path.')
+    parser.add_argument('--repeat', type=int, default=1,
+                        help='The number of repeated jobs.')
+    parser.add_argument('--mark_done', action='store_true',
+                        help='Mark yaml as done after a job has finished.')
+    parser.add_argument('opts', default=None, nargs=argparse.REMAINDER,
+                        help='See graphgym/config.py for remaining options.')
+    parser.add_argument('--pred_ckpt_path', default = './')
+
+    return parser.parse_args()
 
 
 def new_optimizer_config(cfg):
@@ -152,7 +170,7 @@ def preprocess_batch(batch, model, num_sample_configs):
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    for batch in loader:
+    for batch in tqdm(loader):
         num_sample_config = len(batch.y)
         batch = preprocess_batch(batch, model, num_sample_config)
         batch.split = split
@@ -213,6 +231,8 @@ def eval_epoch(logger, loader, model, split='val'):
                     res = module.layer_post_mp(graph_embed)
                     res_list.append(res)
         res_list = torch.cat(res_list, dim=0)
+        print(res_list.shape)
+        logging.info(res_list.shape)
         pred = torch.zeros(1, len(data.y), 1).to(torch.device(cfg.device))
         part_cnt = 0
         for i, num_parts in enumerate(batch_num_parts):
@@ -270,8 +290,10 @@ if __name__ == '__main__':
         loaders = create_loader()
         loggers = create_logger()
         # Load checkpoint from run dir
-        epoch = load_ckpt(model, optimizer, scheduler,
-                                cfg.train.epoch_resume)
+        # epoch = load_ckpt(model, optimizer, scheduler,
+        #                         cfg.train.epoch_resume)
+        ckpt = torch.load(args.pred_ckpt_path)
+        model.load_state_dict(ckpt['model_state'])
         # Print model info
         logging.info(model)
         logging.info(cfg)
