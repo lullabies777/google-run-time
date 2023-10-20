@@ -158,8 +158,8 @@ def preprocess_batch(batch, model, num_sample_configs):
     for g in batch_list:
         # sample_idx = torch.randint(0, g.num_config.item(), (num_sample_configs,))
         # g.y = g.y[sample_idx]
-        # g.config_feats = g.config_feats.view(g.num_config, g.num_config_idx, -1)[sample_idx, ...]
-        # g.config_feats = g.config_feats.transpose(0,1)
+        g.config_feats = g.config_feats.view(g.num_config, g.num_config_idx, -1)
+        g.config_feats = g.config_feats.transpose(0,1)
         g.config_feats_full = torch.zeros((g.num_nodes, num_sample_configs, g.config_feats.shape[-1]), device=g.config_feats.device)
         g.config_feats_full[g.config_idx, ...] += g.config_feats
         g.adj = SparseTensor(row=g.edge_index[0], col=g.edge_index[1], sparse_sizes=(g.num_nodes, g.num_nodes))
