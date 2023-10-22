@@ -59,7 +59,7 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
     model.train()
     optimizer.zero_grad()
     time_start = time.time()
-    num_sample_config = 32
+    num_sample_config = cfg.train.num_sample_config
     for iter, batch in enumerate(loader):
         batch, sampled_idx = preprocess_batch(batch, model, num_sample_config)
         batch.to(torch.device(cfg.device))
@@ -193,7 +193,7 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    num_sample_config = 32
+    num_sample_config = cfg.train.num_sample_config
     for batch in loader:
         batch, _ = preprocess_batch(batch, model, num_sample_config)
         batch.split = split
@@ -239,16 +239,16 @@ def eval_epoch(logger, loader, model, split='val'):
         batch_seg.x = torch.cat((batch_seg.op_feats, model.op_weights * batch_seg.op_emb, batch_seg.config_feats * model.config_weights), dim=-1)
         batch_seg.x = model.linear_map(batch_seg.x)
        
-        module_len = len(list(model.model.children()))
-        for i, module in enumerate(model.model.children()):
+        module_len = len(list(model.model.model.children()))
+        for i, module in enumerate(model.model.model.children()):
             if i < module_len - 1:
                 batch_seg = module(batch_seg)
             if i == module_len - 1:
                 batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
         graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
-        for i, module in enumerate(model.model.children()):
+        for i, module in enumerate(model.model.model.children()):
             if i == module_len - 1:
-                res = module.layer_post_mp(graph_embed)
+                res = module(graph_embed)
         #         res = module.post_mp.layer_post_mp(graph_embed)
         pred = torch.zeros(len(loader.dataset), len(data.y), 1).to(torch.device(cfg.device))
         part_cnt = 0
