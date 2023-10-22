@@ -173,7 +173,7 @@ def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
     for batch in tqdm(loader):
-        num_sample_config = len(batch.y)
+        num_sample_config = 1000
         batch = preprocess_batch(batch, model, num_sample_config)
         batch.split = split
         true = batch.y

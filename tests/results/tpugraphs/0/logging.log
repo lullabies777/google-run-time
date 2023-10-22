@@ -1879,3 +1879,13 @@ Num parameters: 217876
   num node features: 0
   num edge features: 0
   num classes: 467545516
+[*] Run ID 0: seed=0, split_index=0
+    Starting now: 2023-10-22 13:15:19.367198
+[*] Loaded dataset 'TPUGraphs' from 'PyG-TPUGraphs':
+  Data(edge_index=[2, 434115], y=[1863504], op_feats=[266996, 140], op_code=[266996], config_feats=[334076672, 18], config_idx=[11017], num_config=[47], num_config_idx=[47], num_nodes=266996, partptr=[335], partition_idx=[47])
+  undirected: False
+  num graphs: 47
+  avg num_nodes/graph: 5680
+  num node features: 0
+  num edge features: 0
+  num classes: 467545516
