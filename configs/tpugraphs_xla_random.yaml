@@ -1,0 +1,41 @@
+out_dir: tests/results
+dataset:
+  name: TPUGraphs
+  format: PyG-TPUGraphs
+  task: graph
+  task_type: ranking
+  transductive: False
+train:
+  mode: custom_tpu
+  batch_size: 32
+  eval_period: 1
+  ckpt_period: 100
+  sampler: full_batch
+  num_sample_config: 32
+model:
+  type: custom_tpu_gnn
+  loss_fun: cross_entropy
+  edge_decoding: dot
+  graph_pooling: add
+gnn:
+  layers_pre_mp: 0
+  layers_mp: 4
+  layers_post_mp: 3
+  dim_inner: 128
+  layer_type: sageconv
+  stage_type: skipsum
+  batchnorm: False
+  act: prelu
+  dropout: 0.1
+  agg: mean
+  normalize_adj: False
+  dim_in: 128
+optim:
+  optimizer: adam
+  base_lr: 0.0001
+  max_epoch: 2000
+share:
+  dim_in: 286
+device: cuda
+source: "nlp"
+search: "random"

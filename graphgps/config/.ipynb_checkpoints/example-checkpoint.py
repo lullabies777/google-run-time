@@ -37,3 +37,11 @@ def set_cfg_example(cfg):
     cfg.train.mode = 'custom_tpu'
     
     cfg.device = "cuda"
+    
+    cfg.source = "nlp"
+    
+    cfg.search = "random"
+    
+    cfg.gnn.dim_in = 128
+    
+    cfg.train.num_sample_config = 32

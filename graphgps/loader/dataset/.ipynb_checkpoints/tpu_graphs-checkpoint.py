@@ -11,6 +11,7 @@ from torch_geometric.data import (InMemoryDataset, Data, download_url,
 from torch_geometric.utils import remove_isolated_nodes
 from torch_sparse import SparseTensor
 from tqdm import tqdm
+from torch_geometric.graphgym.config import cfg
 
 class TPUGraphs(InMemoryDataset):
 
@@ -21,6 +22,10 @@ class TPUGraphs(InMemoryDataset):
                  source: str = 'nlp',  # 'nlp' or 'xla'
                  search: str = 'random'  # 'random' or 'default'
                 ):
+        source = cfg.source
+        search = cfg.search
+        print(f"Loading source {source}...")
+        print(f"Loading search {search}...")
         assert source in ('nlp', 'xla')
         assert search in ('random', 'default')
         self.thres = thres

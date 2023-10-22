@@ -31,11 +31,19 @@ class CustomGNN(torch.nn.Module):
 
         conv_model = self.build_conv_model(cfg.gnn.layer_type)
         layers = []
-        for _ in range(cfg.gnn.layers_mp):
-            layers.append(conv_model(dim_in,
-                                     dim_in,
+        
+        for i in range(cfg.gnn.layers_mp):
+            if i == 0:
+                layers.append(conv_model(cfg.gnn.dim_in,
+                                     cfg.gnn.dim_inner,
                                      dropout=cfg.gnn.dropout,
                                      residual=cfg.gnn.residual))
+            else:
+                layers.append(conv_model(cfg.gnn.dim_inner,
+                                     cfg.gnn.dim_inner,
+                                     dropout=cfg.gnn.dropout,
+                                     residual=cfg.gnn.residual))
+                
         self.gnn_layers = torch.nn.Sequential(*layers)
 
         GNNHead = register.head_dict[cfg.gnn.head]

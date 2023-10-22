@@ -131,11 +131,11 @@ def run_loop_settings():
     return run_ids, seeds, split_indices
 
 class TPUModel(torch.nn.Module):
-    def __init__(self, model):
+    def __init__(self, model, linear_map_dim):
         super().__init__()
         self.model = model
-        self.emb = nn.Embedding(128, 128, max_norm=True)
-        self.linear_map = nn.Linear(286, 128, bias=True)
+        self.emb = nn.Embedding(128, cfg.gnn.dim_in, max_norm=True)
+        self.linear_map = nn.Linear(linear_map_dim, cfg.gnn.dim_in, bias=True)
         self.op_weights = nn.Parameter(torch.ones(1,1,requires_grad=True) * 100)
         self.config_weights = nn.Parameter(torch.ones(1,18,requires_grad=True) * 100)
 
@@ -288,15 +288,17 @@ if __name__ == '__main__':
         logging.info(f"[*] Run ID {run_id}: seed={cfg.seed}, "
                      f"split_index={cfg.dataset.split_index}")
         logging.info(f"    Starting now: {datetime.datetime.now()}")
+        loaders = create_loader()
+        loggers = create_logger()
         # Set machine learning pipeline
         model = create_model()
-        model = TPUModel(model)
+        linear_map_dim = loaders[0].dataset[0].op_feats.shape[1] + cfg.gnn.dim_in + 18
+        model = TPUModel(model, linear_map_dim) # Parameters associated with the TPU dataset before feeding into GCN/SAGE
         model = model.to(torch.device(cfg.device))
         optimizer = create_optimizer(model.parameters(),
                                      new_optimizer_config(cfg))
         scheduler = create_scheduler(optimizer, new_scheduler_config(cfg))
-        loaders = create_loader()
-        loggers = create_logger()
+
         # Load checkpoint from run dir
         # epoch = load_ckpt(model, optimizer, scheduler,
         #                         cfg.train.epoch_resume)

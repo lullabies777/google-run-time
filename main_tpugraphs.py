@@ -22,7 +22,7 @@ from torch_geometric.graphgym.utils.device import auto_select_device
 from torch_geometric.graphgym.register import train_dict
 from torch_geometric import seed_everything
 import torch.nn as nn
-
+from time import gmtime, strftime
 from graphgps.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
 from graphgps.logger import create_logger
@@ -55,9 +55,11 @@ def custom_set_out_dir(cfg, cfg_fname, name_tag):
         name_tag (string): Additional name tag to identify this execution of the
             configuration file, specified in :obj:`cfg.name_tag`
     """
-    run_name = os.path.splitext(os.path.basename(cfg_fname))[0]
-    run_name += f"-{name_tag}" if name_tag else ""
-    cfg.out_dir = os.path.join(cfg.out_dir, run_name)
+    # run_name = os.path.splitext(os.path.basename(cfg_fname))[0]
+    # run_name += f"-{name_tag}" if name_tag else ""
+    # cfg.out_dir = os.path.join(cfg.out_dir, run_name)
+    s = strftime("%a_%d_%b_%H_%M", gmtime())
+    cfg.out_dir = "results_{source}_{search}_" + s
 
 
 def custom_set_run_dir(cfg, run_id):
@@ -110,11 +112,11 @@ def run_loop_settings():
     return run_ids, seeds, split_indices
 
 class TPUModel(torch.nn.Module):
-    def __init__(self, model):
+    def __init__(self, model, linear_map_dim):
         super().__init__()
         self.model = model
-        self.emb = nn.Embedding(128, 128, max_norm=True)
-        self.linear_map = nn.Linear(286, 128, bias=True)
+        self.emb = nn.Embedding(128, cfg.gnn.dim_in, max_norm=True)
+        self.linear_map = nn.Linear(linear_map_dim, cfg.gnn.dim_in, bias=True)
         self.op_weights = nn.Parameter(torch.ones(1,1,requires_grad=True) * 100)
         self.config_weights = nn.Parameter(torch.ones(1,18,requires_grad=True) * 100)
 
@@ -145,9 +147,10 @@ if __name__ == '__main__':
         logging.info(f"    Starting now: {datetime.datetime.now()}")
         # Set machine learning pipeline
         model = create_model() # Standard GCN/SAGE
-        model = TPUModel(model) # Parameters associated with the TPU dataset before feeding into GCN/SAGE
         loaders = create_loader()
         loggers = create_logger()
+        linear_map_dim = loaders[0].dataset[0].op_feats.shape[1] + cfg.gnn.dim_in + 18
+        model = TPUModel(model, linear_map_dim) # Parameters associated with the TPU dataset before feeding into GCN/SAGE
         if cfg.pretrained.dir:
             model = init_model_from_pretrained(
                 model, cfg.pretrained.dir, cfg.pretrained.freeze_main,

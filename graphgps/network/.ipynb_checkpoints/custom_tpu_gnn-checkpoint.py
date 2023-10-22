@@ -19,7 +19,7 @@ class CustomGNN(torch.nn.Module):
 
     def __init__(self, dim_in, dim_out):
         super().__init__()
-        dim_in = 128
+        dim_in = cfg.dim_in
         self.encoder = FeatureEncoder(dim_in)
         dim_in = self.encoder.dim_in
 
@@ -28,20 +28,23 @@ class CustomGNN(torch.nn.Module):
                 dim_in, cfg.gnn.dim_inner, cfg.gnn.layers_pre_mp)
             dim_in = cfg.gnn.dim_inner
 
-        assert cfg.gnn.dim_inner == dim_in, \
-            "The inner and hidden dims must match."
+        # assert cfg.gnn.dim_inner == dim_in, \
+        #     "The inner and hidden dims must match."
 
         conv_model = self.build_conv_model(cfg.gnn.layer_type)
         layers = []
-        layer_cfg = new_layer_config(dim_in, dim_in, 1, has_act=True, has_bias=True, cfg=cfg)
         for _ in range(cfg.gnn.layers_mp):
+            if i == 0:
+                layer_cfg = new_layer_config(dim_in, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
+            else:
+                layer_cfg = new_layer_config(cfg.gnn.dim_inner, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
             layers.append(conv_model(layer_cfg))
         self.gnn_layers = torch.nn.Sequential(*layers)
 
         # GNNHead = register.head_dict[cfg.gnn.head]
         # self.post_mp = GNNHead(dim_in=cfg.gnn.dim_inner, dim_out=dim_out)
         self.layer_post_mp = MLP(
-            new_layer_config(128, dim_out, cfg.gnn.layers_post_mp,
+            new_layer_config(cfg.gnn.dim_inner, dim_out, cfg.gnn.layers_post_mp,
                              has_act=False, has_bias=True, cfg=cfg))
 
     def build_conv_model(self, model_type):
