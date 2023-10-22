@@ -59,7 +59,7 @@ def custom_set_out_dir(cfg, cfg_fname, name_tag):
     # run_name += f"-{name_tag}" if name_tag else ""
     # cfg.out_dir = os.path.join(cfg.out_dir, run_name)
     s = strftime("%a_%d_%b_%H_%M", gmtime())
-    cfg.out_dir = "results_{source}_{search}_" + s
+    cfg.out_dir = f"../results_{cfg.source}_{cfg.search}_" + s
 
 
 def custom_set_run_dir(cfg, run_id):

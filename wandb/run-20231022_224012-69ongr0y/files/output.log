@@ -1,0 +1,42 @@
+0 CustomGNN(
+  (encoder): FeatureEncoder()
+  (gnn_layers): Sequential(
+    (0): SAGEConv(
+      (model): SAGEConv(128, 256, aggr=mean)
+    )
+    (1): SAGEConv(
+      (model): SAGEConv(256, 256, aggr=mean)
+    )
+    (2): SAGEConv(
+      (model): SAGEConv(256, 256, aggr=mean)
+    )
+    (3): SAGEConv(
+      (model): SAGEConv(256, 256, aggr=mean)
+    )
+  )
+  (layer_post_mp): MLP(
+    (model): Sequential(
+      (0): GeneralMultiLayer(
+        (Layer_0): GeneralLayer(
+          (layer): Linear(
+            (model): Linear(256, 256, bias=True)
+          )
+          (post_layer): Sequential(
+            (0): ReLU()
+          )
+        )
+        (Layer_1): GeneralLayer(
+          (layer): Linear(
+            (model): Linear(256, 256, bias=True)
+          )
+          (post_layer): Sequential(
+            (0): ReLU()
+          )
+        )
+      )
+      (1): Linear(
+        (model): Linear(256, 1, bias=True)
+      )
+    )
+  )
+)

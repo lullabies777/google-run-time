@@ -19,7 +19,7 @@ class CustomGNN(torch.nn.Module):
 
     def __init__(self, dim_in, dim_out):
         super().__init__()
-        dim_in = cfg.dim_in
+        dim_in = cfg.gnn.dim_in
         self.encoder = FeatureEncoder(dim_in)
         dim_in = self.encoder.dim_in
 
@@ -33,7 +33,7 @@ class CustomGNN(torch.nn.Module):
 
         conv_model = self.build_conv_model(cfg.gnn.layer_type)
         layers = []
-        for _ in range(cfg.gnn.layers_mp):
+        for i in range(cfg.gnn.layers_mp):
             if i == 0:
                 layer_cfg = new_layer_config(dim_in, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
             else:

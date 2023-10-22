@@ -116,20 +116,23 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
         batch_train.x = model.linear_map(batch_train.x)
         # print("x shape: ", batch_train.x.shape)
         # print("batch shape: ", batch_train.batch.shape)
-        
-        module_len = len(list(model.model.children()))
-        for i, module in enumerate(model.model.children()):
+        module_len = len(list(model.model.model.children()))
+        for i, module in enumerate(model.model.model.children()):
             if i < module_len - 1:
                 batch_train = module(batch_train)
+                # print(i, batch_train.x.shape, batch_train.batch.shape)
             if i == module_len - 1:
                 batch_train_embed = tnn.global_max_pool(batch_train.x, batch_train.batch) + tnn.global_mean_pool(batch_train.x, batch_train.batch)
         graph_embed = batch_train_embed / torch.norm(batch_train_embed, dim=-1, keepdim=True)
         # print("graph_embed shape: ", graph_embed.shape)
 
-        for i, module in enumerate(model.model.children()):
+        # for i, module in enumerate(model.model.model.children()):
+        #     if i == module_len - 1:
+        #         graph_embed = module.layer_post_mp(graph_embed)
+        for i, module in enumerate(model.model.model.children()):
             if i == module_len - 1:
-                graph_embed = module.layer_post_mp(graph_embed)
-        
+                graph_embed = module(graph_embed)
+        # print(graph_embed.shape)
         binomial = torch.distributions.binomial.Binomial(probs=0.5)
         if len(batch_other) > 0:
             batch_other = torch.cat(batch_other, dim=0)
@@ -313,7 +316,8 @@ def custom_train(loggers, loaders, model, optimizer, scheduler):
             wandb_name = make_wandb_name(cfg)
         else:
             wandb_name = cfg.wandb.name
-        run = wandb.init(entity=cfg.wandb.entity, project=cfg.wandb.project,
+        wandb_name = cfg.out_dir
+        run = wandb.init(project=cfg.wandb.project,
                          name=wandb_name)
         run.config.update(cfg_to_dict(cfg))
 

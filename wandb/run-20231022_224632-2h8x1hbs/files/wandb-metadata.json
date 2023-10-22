@@ -1,0 +1,207 @@
+{
+    "os": "Linux-6.2.0-34-generic-x86_64-with-glibc2.35",
+    "python": "3.11.4",
+    "heartbeatAt": "2023-10-22T14:46:36.186781",
+    "startedAt": "2023-10-22T14:46:32.268543",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "<python with no main file>",
+    "codePathLocal": null,
+    "git": {
+        "remote": "git@github.com:lullabies777/google-run-time.git",
+        "commit": "77a1b8496a48ac0aee78b96092b39fbe930dc278"
+    },
+    "email": "xuanming@test.com",
+    "root": "/home/xuanming/kaggle/google_runtime/torch/GST",
+    "host": "xuanming-System-Product-Name",
+    "username": "xuanming",
+    "executable": "/home/xuanming/anaconda3/bin/python",
+    "cpu_count": 16,
+    "cpu_count_logical": 32,
+    "cpu_freq": {
+        "current": 2.2384062500000006,
+        "min": 2200.0,
+        "max": 3500.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.194,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 3.5,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.193,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.194,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.196,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.196,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.194,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.2,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.195,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.194,
+            "min": 2200.0,
+            "max": 3500.0
+        },
+        {
+            "current": 2.196,
+            "min": 2200.0,
+            "max": 3500.0
+        }
+    ],
+    "disk": {
+        "/": {
+            "total": 479.0528793334961,
+            "used": 410.16650390625
+        }
+    },
+    "gpu": "NVIDIA GeForce RTX 4090",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 4090",
+            "memory_total": 25757220864
+        }
+    ],
+    "memory": {
+        "total": 62.69700241088867
+    }
+}

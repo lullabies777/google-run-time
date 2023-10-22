@@ -1,0 +1,67 @@
+2023-10-22 23:00:06,539 INFO    StreamThr :15614 [internal.py:wandb_internal():86] W&B internal server running at pid: 15614, started at: 2023-10-22 23:00:06.538804
+2023-10-22 23:00:06,541 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status
+2023-10-22 23:00:06,549 INFO    WriterThread:15614 [datastore.py:open_for_write():85] open: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/run-76m4q4fx.wandb
+2023-10-22 23:00:06,549 DEBUG   SenderThread:15614 [sender.py:send():379] send: header
+2023-10-22 23:00:06,559 DEBUG   SenderThread:15614 [sender.py:send():379] send: run
+2023-10-22 23:00:08,618 INFO    SenderThread:15614 [dir_watcher.py:__init__():211] watching files in: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files
+2023-10-22 23:00:08,618 INFO    SenderThread:15614 [sender.py:_start_run_threads():1121] run started: 76m4q4fx with start time 1697986806.539147
+2023-10-22 23:00:08,625 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: check_version
+2023-10-22 23:00:08,625 DEBUG   SenderThread:15614 [sender.py:send_request():406] send_request: check_version
+2023-10-22 23:00:09,493 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: run_start
+2023-10-22 23:00:09,508 DEBUG   HandlerThread:15614 [system_info.py:__init__():32] System info init
+2023-10-22 23:00:09,508 DEBUG   HandlerThread:15614 [system_info.py:__init__():47] System info init done
+2023-10-22 23:00:09,508 INFO    HandlerThread:15614 [system_monitor.py:start():181] Starting system monitor
+2023-10-22 23:00:09,508 INFO    SystemMonitor:15614 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-10-22 23:00:09,509 INFO    HandlerThread:15614 [system_monitor.py:probe():201] Collecting system info
+2023-10-22 23:00:09,509 INFO    SystemMonitor:15614 [interfaces.py:start():190] Started cpu monitoring
+2023-10-22 23:00:09,510 INFO    SystemMonitor:15614 [interfaces.py:start():190] Started disk monitoring
+2023-10-22 23:00:09,510 INFO    SystemMonitor:15614 [interfaces.py:start():190] Started gpu monitoring
+2023-10-22 23:00:09,511 INFO    SystemMonitor:15614 [interfaces.py:start():190] Started memory monitoring
+2023-10-22 23:00:09,512 INFO    SystemMonitor:15614 [interfaces.py:start():190] Started network monitoring
+2023-10-22 23:00:09,532 DEBUG   HandlerThread:15614 [system_info.py:probe():196] Probing system
+2023-10-22 23:00:09,534 DEBUG   HandlerThread:15614 [system_info.py:_probe_git():181] Probing git
+2023-10-22 23:00:09,543 DEBUG   HandlerThread:15614 [system_info.py:_probe_git():189] Probing git done
+2023-10-22 23:00:09,543 DEBUG   HandlerThread:15614 [system_info.py:probe():244] Probing system done
+2023-10-22 23:00:09,543 DEBUG   HandlerThread:15614 [system_monitor.py:probe():210] {'os': 'Linux-6.2.0-34-generic-x86_64-with-glibc2.35', 'python': '3.11.4', 'heartbeatAt': '2023-10-22T15:00:09.532214', 'startedAt': '2023-10-22T15:00:06.533814', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '<python with no main file>', 'codePathLocal': None, 'git': {'remote': 'git@github.com:lullabies777/google-run-time.git', 'commit': '77a1b8496a48ac0aee78b96092b39fbe930dc278'}, 'email': 'xuanming@test.com', 'root': '/home/xuanming/kaggle/google_runtime/torch/GST', 'host': 'xuanming-System-Product-Name', 'username': 'xuanming', 'executable': '/home/xuanming/anaconda3/bin/python', 'cpu_count': 16, 'cpu_count_logical': 32, 'cpu_freq': {'current': 2.2386875000000006, 'min': 2200.0, 'max': 3500.0}, 'cpu_freq_per_core': [{'current': 2.191, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.197, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.191, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 3.5, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.193, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.193, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}], 'disk': {'/': {'total': 479.0528793334961, 'used': 410.16736221313477}}, 'gpu': 'NVIDIA GeForce RTX 4090', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 4090', 'memory_total': 25757220864}], 'memory': {'total': 62.69700241088867}}
+2023-10-22 23:00:09,543 INFO    HandlerThread:15614 [system_monitor.py:probe():211] Finished collecting system info
+2023-10-22 23:00:09,543 INFO    HandlerThread:15614 [system_monitor.py:probe():214] Publishing system info
+2023-10-22 23:00:09,543 DEBUG   HandlerThread:15614 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-22 23:00:09,544 DEBUG   HandlerThread:15614 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-22 23:00:09,544 DEBUG   HandlerThread:15614 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-10-22 23:00:09,620 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/requirements.txt
+2023-10-22 23:00:09,620 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/conda-environment.yaml
+2023-10-22 23:00:17,597 DEBUG   HandlerThread:15614 [system_info.py:_save_conda():87] Saving conda packages done
+2023-10-22 23:00:17,597 INFO    HandlerThread:15614 [system_monitor.py:probe():216] Finished publishing system info
+2023-10-22 23:00:17,602 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:17,602 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: keepalive
+2023-10-22 23:00:17,603 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:17,603 DEBUG   SenderThread:15614 [sender.py:send():379] send: files
+2023-10-22 23:00:17,603 INFO    SenderThread:15614 [sender.py:_save_file():1375] saving file wandb-metadata.json with policy now
+2023-10-22 23:00:17,614 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 23:00:17,615 DEBUG   SenderThread:15614 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 23:00:17,617 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 23:00:17,621 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/conda-environment.yaml
+2023-10-22 23:00:17,621 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/wandb-metadata.json
+2023-10-22 23:00:18,767 DEBUG   SenderThread:15614 [sender.py:send():379] send: telemetry
+2023-10-22 23:00:18,767 DEBUG   SenderThread:15614 [sender.py:send():379] send: config
+2023-10-22 23:00:20,151 INFO    wandb-upload_0:15614 [upload_job.py:push():131] Uploaded file /tmp/tmptxlhrb4owandb/y9ywvr4g-wandb-metadata.json
+2023-10-22 23:00:22,768 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:27,769 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:32,615 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 23:00:32,616 DEBUG   SenderThread:15614 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 23:00:32,620 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 23:00:33,059 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:36,627 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/output.log
+2023-10-22 23:00:38,248 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:38,628 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/output.log
+2023-10-22 23:00:39,628 INFO    Thread-12 :15614 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_230006-76m4q4fx/files/config.yaml
+2023-10-22 23:00:43,733 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:48,735 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:53,735 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:00:58,736 DEBUG   HandlerThread:15614 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 23:01:01,665 INFO    MainThread:15614 [internal.py:handle_exit():76] Internal process exited
+2023-10-22 23:01:01,672 INFO    memory    :15614 [interfaces.py:monitor():140] Process proc.memory.rssMB has exited.
+2023-10-22 23:01:01,672 DEBUG   SystemMonitor:15614 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-10-22 23:01:01,672 DEBUG   SystemMonitor:15614 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-10-22 23:01:01,672 DEBUG   SystemMonitor:15614 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-10-22 23:01:01,674 DEBUG   SenderThread:15614 [sender.py:send():379] send: stats

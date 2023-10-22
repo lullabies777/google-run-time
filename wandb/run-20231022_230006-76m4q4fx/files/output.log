@@ -1,0 +1,4 @@
+0 torch.Size([280480, 128]) torch.Size([280480])
+1 torch.Size([280480, 256]) torch.Size([280480])
+torch.Size([320, 1])
+train: {'epoch': 0, 'time_epoch': 16.03833, 'eta': 32060.6223, 'eta_hours': 8.90573, 'loss': 51.60587692, 'lr': 0.0001, 'params': 644756, 'time_iter': 16.03833, 'opa': 0.36143, 'spearmanr': -0.37177}

@@ -1,0 +1,31 @@
+2023-10-22 22:28:31,893 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Current SDK version is 0.15.10
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Configure stats pid to 14347
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Loading settings from /home/xuanming/.config/wandb/settings
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Loading settings from /home/xuanming/kaggle/google_runtime/torch/GST/wandb/settings
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program': '<python with no main file>'}
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:_log_setup():524] Logging user logs to /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_222831-mhk7yqxt/logs/debug.log
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:_log_setup():525] Logging internal logs to /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_222831-mhk7yqxt/logs/debug-internal.log
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:_jupyter_setup():470] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7f20e5ea5950>
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:init():564] calling init triggers
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:init():571] wandb.init called with sweep_config: {}
+config: {}
+2023-10-22 22:28:31,894 INFO    MainThread:14347 [wandb_init.py:init():614] starting backend
+2023-10-22 22:28:31,895 INFO    MainThread:14347 [wandb_init.py:init():618] setting up manager
+2023-10-22 22:28:31,898 INFO    MainThread:14347 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2023-10-22 22:28:31,899 INFO    MainThread:14347 [wandb_init.py:init():624] backend started and connected
+2023-10-22 22:28:31,913 INFO    MainThread:14347 [wandb_run.py:_label_probe_notebook():1276] probe notebook
+2023-10-22 22:28:31,913 INFO    MainThread:14347 [wandb_run.py:_label_probe_notebook():1286] Unable to probe notebook: 'NoneType' object has no attribute 'get'
+2023-10-22 22:28:31,913 INFO    MainThread:14347 [wandb_init.py:init():715] updated telemetry
+2023-10-22 22:28:31,921 INFO    MainThread:14347 [wandb_init.py:init():748] communicating run to backend with 90.0 second timeout
+2023-10-22 22:28:32,629 ERROR   MainThread:14347 [wandb_init.py:init():774] encountered error: It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 403: Forbidden)
+2023-10-22 22:28:32,723 ERROR   MainThread:14347 [wandb_init.py:init():1183] It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 403: Forbidden)
+Traceback (most recent call last):
+  File "/home/xuanming/.local/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 1165, in init
+    run = wi.init()
+          ^^^^^^^^^
+  File "/home/xuanming/.local/lib/python3.11/site-packages/wandb/sdk/wandb_init.py", line 780, in init
+    raise error
+wandb.errors.CommError: It appears that you do not have permission to access the requested resource. Please reach out to the project owner to grant you access. If you have the correct permissions, verify that there are no issues with your networking setup.(Error 403: Forbidden)
+2023-10-22 22:30:30,788 WARNING MsgRouterThr:14347 [router.py:message_loop():77] message_loop has been closed

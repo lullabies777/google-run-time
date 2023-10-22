@@ -1,0 +1,242 @@
+2023-10-22 22:53:31,932 INFO    StreamThr :15238 [internal.py:wandb_internal():86] W&B internal server running at pid: 15238, started at: 2023-10-22 22:53:31.931689
+2023-10-22 22:53:31,934 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status
+2023-10-22 22:53:31,941 INFO    WriterThread:15238 [datastore.py:open_for_write():85] open: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/run-q6j80fke.wandb
+2023-10-22 22:53:31,942 DEBUG   SenderThread:15238 [sender.py:send():379] send: header
+2023-10-22 22:53:31,952 DEBUG   SenderThread:15238 [sender.py:send():379] send: run
+2023-10-22 22:53:34,669 INFO    SenderThread:15238 [dir_watcher.py:__init__():211] watching files in: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files
+2023-10-22 22:53:34,669 INFO    SenderThread:15238 [sender.py:_start_run_threads():1121] run started: q6j80fke with start time 1697986411.932008
+2023-10-22 22:53:34,676 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: check_version
+2023-10-22 22:53:34,676 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: check_version
+2023-10-22 22:53:35,166 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: run_start
+2023-10-22 22:53:35,181 DEBUG   HandlerThread:15238 [system_info.py:__init__():32] System info init
+2023-10-22 22:53:35,181 DEBUG   HandlerThread:15238 [system_info.py:__init__():47] System info init done
+2023-10-22 22:53:35,181 INFO    HandlerThread:15238 [system_monitor.py:start():181] Starting system monitor
+2023-10-22 22:53:35,181 INFO    SystemMonitor:15238 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-10-22 22:53:35,182 INFO    HandlerThread:15238 [system_monitor.py:probe():201] Collecting system info
+2023-10-22 22:53:35,182 INFO    SystemMonitor:15238 [interfaces.py:start():190] Started cpu monitoring
+2023-10-22 22:53:35,183 INFO    SystemMonitor:15238 [interfaces.py:start():190] Started disk monitoring
+2023-10-22 22:53:35,184 INFO    SystemMonitor:15238 [interfaces.py:start():190] Started gpu monitoring
+2023-10-22 22:53:35,185 INFO    SystemMonitor:15238 [interfaces.py:start():190] Started memory monitoring
+2023-10-22 22:53:35,186 INFO    SystemMonitor:15238 [interfaces.py:start():190] Started network monitoring
+2023-10-22 22:53:35,205 DEBUG   HandlerThread:15238 [system_info.py:probe():196] Probing system
+2023-10-22 22:53:35,208 DEBUG   HandlerThread:15238 [system_info.py:_probe_git():181] Probing git
+2023-10-22 22:53:35,217 DEBUG   HandlerThread:15238 [system_info.py:_probe_git():189] Probing git done
+2023-10-22 22:53:35,217 DEBUG   HandlerThread:15238 [system_info.py:probe():244] Probing system done
+2023-10-22 22:53:35,217 DEBUG   HandlerThread:15238 [system_monitor.py:probe():210] {'os': 'Linux-6.2.0-34-generic-x86_64-with-glibc2.35', 'python': '3.11.4', 'heartbeatAt': '2023-10-22T14:53:35.206050', 'startedAt': '2023-10-22T14:53:31.926669', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '<python with no main file>', 'codePathLocal': None, 'git': {'remote': 'git@github.com:lullabies777/google-run-time.git', 'commit': '77a1b8496a48ac0aee78b96092b39fbe930dc278'}, 'email': 'xuanming@test.com', 'root': '/home/xuanming/kaggle/google_runtime/torch/GST', 'host': 'xuanming-System-Product-Name', 'username': 'xuanming', 'executable': '/home/xuanming/anaconda3/bin/python', 'cpu_count': 16, 'cpu_count_logical': 32, 'cpu_freq': {'current': 2.1975, 'min': 2200.0, 'max': 3500.0}, 'cpu_freq_per_core': [{'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.196, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.194, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.2, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}, {'current': 2.195, 'min': 2200.0, 'max': 3500.0}], 'disk': {'/': {'total': 479.0528793334961, 'used': 410.1668891906738}}, 'gpu': 'NVIDIA GeForce RTX 4090', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 4090', 'memory_total': 25757220864}], 'memory': {'total': 62.69700241088867}}
+2023-10-22 22:53:35,217 INFO    HandlerThread:15238 [system_monitor.py:probe():211] Finished collecting system info
+2023-10-22 22:53:35,217 INFO    HandlerThread:15238 [system_monitor.py:probe():214] Publishing system info
+2023-10-22 22:53:35,217 DEBUG   HandlerThread:15238 [system_info.py:_save_pip():52] Saving list of pip packages installed into the current environment
+2023-10-22 22:53:35,218 DEBUG   HandlerThread:15238 [system_info.py:_save_pip():68] Saving pip packages done
+2023-10-22 22:53:35,218 DEBUG   HandlerThread:15238 [system_info.py:_save_conda():75] Saving list of conda packages installed into the current environment
+2023-10-22 22:53:35,670 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/requirements.txt
+2023-10-22 22:53:35,670 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/conda-environment.yaml
+2023-10-22 22:53:42,671 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/conda-environment.yaml
+2023-10-22 22:53:42,866 DEBUG   HandlerThread:15238 [system_info.py:_save_conda():87] Saving conda packages done
+2023-10-22 22:53:42,867 INFO    HandlerThread:15238 [system_monitor.py:probe():216] Finished publishing system info
+2023-10-22 22:53:42,872 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:53:42,872 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: keepalive
+2023-10-22 22:53:42,872 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:53:42,872 DEBUG   SenderThread:15238 [sender.py:send():379] send: files
+2023-10-22 22:53:42,872 INFO    SenderThread:15238 [sender.py:_save_file():1375] saving file wandb-metadata.json with policy now
+2023-10-22 22:53:42,885 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:53:42,885 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:53:42,887 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:53:43,671 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/wandb-metadata.json
+2023-10-22 22:53:44,664 DEBUG   SenderThread:15238 [sender.py:send():379] send: telemetry
+2023-10-22 22:53:44,664 DEBUG   SenderThread:15238 [sender.py:send():379] send: config
+2023-10-22 22:53:45,476 INFO    wandb-upload_0:15238 [upload_job.py:push():131] Uploaded file /tmp/tmprz8h1duuwandb/dffd0y0b-wandb-metadata.json
+2023-10-22 22:53:47,665 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:53:52,666 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:53:57,667 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:53:57,887 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:53:57,888 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:53:57,889 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:54:01,676 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/output.log
+2023-10-22 22:54:02,077 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: pause
+2023-10-22 22:54:02,078 INFO    HandlerThread:15238 [handler.py:handle_request_pause():699] stopping system metrics thread
+2023-10-22 22:54:02,078 INFO    HandlerThread:15238 [system_monitor.py:finish():190] Stopping system monitor
+2023-10-22 22:54:02,078 DEBUG   SystemMonitor:15238 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-10-22 22:54:02,078 DEBUG   SystemMonitor:15238 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-10-22 22:54:02,078 DEBUG   SystemMonitor:15238 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-10-22 22:54:02,079 INFO    HandlerThread:15238 [interfaces.py:finish():202] Joined cpu monitor
+2023-10-22 22:54:02,080 INFO    HandlerThread:15238 [interfaces.py:finish():202] Joined disk monitor
+2023-10-22 22:54:02,191 INFO    HandlerThread:15238 [interfaces.py:finish():202] Joined gpu monitor
+2023-10-22 22:54:02,191 INFO    HandlerThread:15238 [interfaces.py:finish():202] Joined memory monitor
+2023-10-22 22:54:02,191 INFO    HandlerThread:15238 [interfaces.py:finish():202] Joined network monitor
+2023-10-22 22:54:02,192 DEBUG   SenderThread:15238 [sender.py:send():379] send: stats
+2023-10-22 22:54:03,196 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:03,677 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/output.log
+2023-10-22 22:54:04,677 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/config.yaml
+2023-10-22 22:54:08,757 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:12,885 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:54:12,886 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:54:12,887 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:54:14,401 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:19,402 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:24,403 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:27,885 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:54:27,885 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:54:27,925 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:54:29,705 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:34,706 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:39,706 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:42,885 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:54:42,885 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:54:42,925 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:54:45,417 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:50,418 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:55,419 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:54:57,885 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: stop_status
+2023-10-22 22:54:57,886 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: stop_status
+2023-10-22 22:54:57,929 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:55:00,836 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:55:05,837 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:55:07,574 DEBUG   SenderThread:15238 [sender.py:send():379] send: exit
+2023-10-22 22:55:07,574 INFO    SenderThread:15238 [sender.py:send_exit():584] handling exit code: 0
+2023-10-22 22:55:07,574 INFO    SenderThread:15238 [sender.py:send_exit():586] handling runtime: 27
+2023-10-22 22:55:07,576 INFO    SenderThread:15238 [sender.py:_save_file():1375] saving file wandb-summary.json with policy end
+2023-10-22 22:55:07,576 INFO    SenderThread:15238 [sender.py:send_exit():592] send defer
+2023-10-22 22:55:07,576 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,577 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 0
+2023-10-22 22:55:07,577 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,577 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 0
+2023-10-22 22:55:07,577 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 1
+2023-10-22 22:55:07,577 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,577 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 1
+2023-10-22 22:55:07,577 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,577 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 1
+2023-10-22 22:55:07,577 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 2
+2023-10-22 22:55:07,577 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,578 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 2
+2023-10-22 22:55:07,578 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,578 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 2
+2023-10-22 22:55:07,578 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 3
+2023-10-22 22:55:07,578 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,578 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 3
+2023-10-22 22:55:07,578 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,578 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 3
+2023-10-22 22:55:07,578 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 4
+2023-10-22 22:55:07,578 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,578 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 4
+2023-10-22 22:55:07,579 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,579 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 4
+2023-10-22 22:55:07,579 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 5
+2023-10-22 22:55:07,579 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,579 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 5
+2023-10-22 22:55:07,579 DEBUG   SenderThread:15238 [sender.py:send():379] send: summary
+2023-10-22 22:55:07,579 INFO    SenderThread:15238 [sender.py:_save_file():1375] saving file wandb-summary.json with policy end
+2023-10-22 22:55:07,579 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,579 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 5
+2023-10-22 22:55:07,580 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 6
+2023-10-22 22:55:07,580 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,580 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 6
+2023-10-22 22:55:07,580 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,580 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 6
+2023-10-22 22:55:07,580 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 7
+2023-10-22 22:55:07,580 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:55:07,580 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:07,580 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 7
+2023-10-22 22:55:07,581 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:07,581 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 7
+2023-10-22 22:55:07,692 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_created():271] file/dir created: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/wandb-summary.json
+2023-10-22 22:55:08,574 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:09,086 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 8
+2023-10-22 22:55:09,086 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:09,086 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:09,086 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 8
+2023-10-22 22:55:09,087 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:09,087 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 8
+2023-10-22 22:55:09,087 INFO    SenderThread:15238 [job_builder.py:build():281] Attempting to build job artifact
+2023-10-22 22:55:09,088 INFO    SenderThread:15238 [job_builder.py:_get_source_type():393] is repo sourced job
+2023-10-22 22:55:09,089 INFO    SenderThread:15238 [job_builder.py:_get_program_relpath():411] run is notebook based run
+2023-10-22 22:55:09,089 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 9
+2023-10-22 22:55:09,089 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:09,089 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 9
+2023-10-22 22:55:09,089 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:09,089 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 9
+2023-10-22 22:55:09,089 INFO    SenderThread:15238 [dir_watcher.py:finish():358] shutting down directory watcher
+2023-10-22 22:55:09,575 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:09,693 INFO    Thread-12 :15238 [dir_watcher.py:_on_file_modified():288] file/dir modified: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/output.log
+2023-10-22 22:55:09,693 INFO    SenderThread:15238 [dir_watcher.py:finish():388] scan: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files
+2023-10-22 22:55:09,693 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/output.log output.log
+2023-10-22 22:55:09,693 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/conda-environment.yaml conda-environment.yaml
+2023-10-22 22:55:09,694 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/config.yaml config.yaml
+2023-10-22 22:55:09,696 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/wandb-metadata.json wandb-metadata.json
+2023-10-22 22:55:09,696 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/requirements.txt requirements.txt
+2023-10-22 22:55:09,697 INFO    SenderThread:15238 [dir_watcher.py:finish():402] scan save: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/wandb-summary.json wandb-summary.json
+2023-10-22 22:55:09,697 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 10
+2023-10-22 22:55:09,697 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:09,697 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:09,697 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 10
+2023-10-22 22:55:09,700 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:09,702 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 10
+2023-10-22 22:55:09,706 INFO    SenderThread:15238 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-22 22:55:10,575 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:10,576 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:10,992 INFO    wandb-upload_0:15238 [upload_job.py:push():131] Uploaded file /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/output.log
+2023-10-22 22:55:11,576 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:11,576 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:12,476 INFO    wandb-upload_2:15238 [upload_job.py:push():131] Uploaded file /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/config.yaml
+2023-10-22 22:55:12,576 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:12,577 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:12,857 INFO    wandb-upload_4:15238 [upload_job.py:push():131] Uploaded file /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/wandb-summary.json
+2023-10-22 22:55:13,577 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:13,577 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:14,577 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:14,578 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:15,579 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:15,579 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:16,579 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:16,580 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:16,580 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: status_report
+2023-10-22 22:55:17,410 INFO    wandb-upload_1:15238 [upload_job.py:push():131] Uploaded file /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/conda-environment.yaml
+2023-10-22 22:55:17,420 INFO    wandb-upload_3:15238 [upload_job.py:push():131] Uploaded file /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/files/requirements.txt
+2023-10-22 22:55:17,581 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:17,581 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:17,620 INFO    Thread-11 (_thread_body):15238 [sender.py:transition_state():612] send defer: 11
+2023-10-22 22:55:17,621 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:17,621 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 11
+2023-10-22 22:55:17,621 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:17,621 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 11
+2023-10-22 22:55:17,621 INFO    SenderThread:15238 [file_pusher.py:join():181] waiting for file pusher
+2023-10-22 22:55:17,621 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 12
+2023-10-22 22:55:17,622 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:17,622 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 12
+2023-10-22 22:55:17,622 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:17,622 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 12
+2023-10-22 22:55:17,622 INFO    SenderThread:15238 [file_stream.py:finish():594] file stream finish called
+2023-10-22 22:55:18,581 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:18,606 INFO    SenderThread:15238 [file_stream.py:finish():598] file stream finish is done
+2023-10-22 22:55:18,606 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 13
+2023-10-22 22:55:18,606 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:18,607 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:18,607 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 13
+2023-10-22 22:55:18,607 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:18,607 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 13
+2023-10-22 22:55:18,607 INFO    SenderThread:15238 [sender.py:transition_state():612] send defer: 14
+2023-10-22 22:55:18,607 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: defer
+2023-10-22 22:55:18,607 INFO    HandlerThread:15238 [handler.py:handle_request_defer():170] handle defer: 14
+2023-10-22 22:55:18,607 DEBUG   SenderThread:15238 [sender.py:send():379] send: final
+2023-10-22 22:55:18,608 DEBUG   SenderThread:15238 [sender.py:send():379] send: footer
+2023-10-22 22:55:18,608 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: defer
+2023-10-22 22:55:18,608 INFO    SenderThread:15238 [sender.py:send_request_defer():608] handle sender defer: 14
+2023-10-22 22:55:18,608 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:18,608 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: poll_exit
+2023-10-22 22:55:18,609 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:18,609 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: poll_exit
+2023-10-22 22:55:18,609 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: server_info
+2023-10-22 22:55:18,609 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: server_info
+2023-10-22 22:55:18,611 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: get_summary
+2023-10-22 22:55:18,612 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: sampled_history
+2023-10-22 22:55:18,612 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: internal_messages
+2023-10-22 22:55:18,612 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: job_info
+2023-10-22 22:55:19,030 DEBUG   SenderThread:15238 [sender.py:send_request():406] send_request: job_info
+2023-10-22 22:55:19,030 INFO    MainThread:15238 [wandb_run.py:_footer_history_summary_info():3557] rendering history
+2023-10-22 22:55:19,030 INFO    MainThread:15238 [wandb_run.py:_footer_history_summary_info():3589] rendering summary
+2023-10-22 22:55:19,030 INFO    MainThread:15238 [wandb_run.py:_footer_sync_info():3516] logging synced files
+2023-10-22 22:55:19,031 DEBUG   HandlerThread:15238 [handler.py:handle_request():144] handle_request: shutdown
+2023-10-22 22:55:19,031 INFO    HandlerThread:15238 [handler.py:finish():840] shutting down handler
+2023-10-22 22:55:19,613 INFO    WriterThread:15238 [datastore.py:close():294] close: /home/xuanming/kaggle/google_runtime/torch/GST/wandb/run-20231022_225331-q6j80fke/run-q6j80fke.wandb
+2023-10-22 22:55:20,030 INFO    SenderThread:15238 [sender.py:finish():1531] shutting down sender
+2023-10-22 22:55:20,030 INFO    SenderThread:15238 [file_pusher.py:finish():175] shutting down file pusher
+2023-10-22 22:55:20,030 INFO    SenderThread:15238 [file_pusher.py:join():181] waiting for file pusher
