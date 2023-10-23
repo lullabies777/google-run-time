@@ -12,6 +12,7 @@ train:
   ckpt_period: 100
   sampler: full_batch
   num_sample_config: 64
+  ckpt_best: True
 model:
   type: custom_tpu_gnn
   loss_fun: cross_entropy
@@ -39,6 +40,7 @@ share:
 device: cuda
 source: "xla"
 search: "random"
+seed: 777
 wandb:
   use: True
   project: "Google Runtime"

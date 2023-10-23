@@ -322,7 +322,7 @@ def custom_train(loggers, loaders, model, optimizer, scheduler):
         run.config.update(cfg_to_dict(cfg))
 
     num_splits = len(loggers)
-    split_names = ['val', 'test']
+    split_names = ['val']
     full_epoch_times = []
     perf = [[] for _ in range(num_splits)]
     emb_table = History(500000000, 1)
