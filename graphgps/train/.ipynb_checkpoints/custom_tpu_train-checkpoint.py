@@ -322,7 +322,7 @@ def custom_train(loggers, loaders, model, optimizer, scheduler):
         run.config.update(cfg_to_dict(cfg))
 
     num_splits = len(loggers)
-    split_names = ['val']
+    split_names = ['val', 'test']
     full_epoch_times = []
     perf = [[] for _ in range(num_splits)]
     emb_table = History(500000000, 1)
@@ -357,7 +357,7 @@ def custom_train(loggers, loaders, model, optimizer, scheduler):
 
         # Log current best stats on eval epoch.
         if is_eval_epoch(cur_epoch):
-            best_epoch = np.array([vp['loss'] for vp in val_perf]).argmin()
+            best_epoch = np.array([vp['opa'] for vp in val_perf]).argmin()
             best_train = best_val = best_test = ""
             if cfg.metric_best != 'auto':
                 # Select again based on val perf of `cfg.metric_best`.

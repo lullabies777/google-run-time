@@ -770,6 +770,7 @@ class TPUGraphs(InMemoryDataset):
         op_feats_std[op_feats_std < 1e-6] = 1
         self.data.op_feats = (self.data.op_feats - op_feats_mean) / op_feats_std
         
+<<<<<<< HEAD
     
     @property
     def processed_dir(self) -> str:
@@ -788,6 +789,8 @@ class TPUGraphs(InMemoryDataset):
             files = files()
         return [osp.join(self.processed_dir, f) for f in to_list(files)]
     
+=======
+>>>>>>> parent of 2f748ac (update inference)
     @property
     def raw_file_names(self) -> List[str]:
         return [f'npz/layout/{self.source}/{self.search}']
@@ -812,7 +815,7 @@ class TPUGraphs(InMemoryDataset):
                     split_dict[split_name].append(graphs_cnt)
                     np_file = dict(np.load(filename))
                     if "edge_index" not in np_file:
-                        print('error in', filename)
+                      print('error in', filename)
                     edge_index = torch.tensor(np_file["edge_index"].T)
                     runtime = torch.tensor(np_file["config_runtime"])
                     op = torch.tensor(np_file["node_feat"])
