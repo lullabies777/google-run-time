@@ -157,7 +157,7 @@ if __name__ == '__main__':
         print(os.path.join(loaders[0].dataset.raw_paths[0]))
         filenames = glob.glob(osp.join(os.path.join(loaders[0].dataset.raw_paths[0], 'train'), '*.npz'))
         tmp = np.load(filenames[0])
-        assert sum(loaders[0].dataset[0].y == torch.tensor(tmp['config_runtime'])) == len(loaders[0].dataset[0].y)\
+        assert sum(loaders[0].dataset[0].y == torch.tensor(tmp['config_runtime'])) == len(loaders[0].dataset[0].y)
         print('Checked!!!')
         loggers = create_logger()
         linear_map_dim = loaders[0].dataset[0].op_feats.shape[1] + cfg.gnn.dim_in + 18
