@@ -50,10 +50,6 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('opts', default=None, nargs=argparse.REMAINDER,
                         help='See graphgym/config.py for remaining options.')
     parser.add_argument('--pred_ckpt_path', default = './')
-    
-    parser.add_argument('--source', default = 'nlp')
-    
-    parser.add_argument('--search', default = 'random')
 
     return parser.parse_args()
 
