@@ -308,7 +308,7 @@ if __name__ == '__main__':
         print(os.path.join(loaders[0].dataset.raw_paths[0]))
         filenames = glob.glob(osp.join(os.path.join(loaders[0].dataset.raw_paths[0], 'train'), '*.npz'))
         tmp = np.load(filenames[0])
-        if sum(loaders[0].dataset[0].y == torch.tensor(tmp['config_runtime'])) == len(loaders[0].dataset[0].y)
+        if sum(loaders[0].dataset[0].y == torch.tensor(tmp['config_runtime'])) == len(loaders[0].dataset[0].y):
             print('Checked!!!')
         else:
             print('Not Checked!!!')
