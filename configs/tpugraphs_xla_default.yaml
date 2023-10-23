@@ -11,7 +11,7 @@ train:
   eval_period: 1
   ckpt_period: 100
   sampler: full_batch
-  num_sample_config: 128
+  num_sample_config: 64
   ckpt_best: True
 model:
   type: custom_tpu_gnn
