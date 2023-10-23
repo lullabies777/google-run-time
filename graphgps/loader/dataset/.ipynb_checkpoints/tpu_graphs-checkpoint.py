@@ -56,6 +56,8 @@ class TPUGraphs(InMemoryDataset):
         for raw_path in self.raw_paths:
             for split_name in split_names:
                 filenames = glob.glob(osp.join(os.path.join(raw_path, split_name), '*.npz'))
+                if split_name == 'test':
+                    self.test_filenames = filenames
                 for filename in tqdm(filenames):
                     split_dict[split_name].append(graphs_cnt)
                     np_file = dict(np.load(filename))

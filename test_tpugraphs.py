@@ -33,7 +33,7 @@ from tqdm import tqdm
 from graphgps.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
 from graphgps.logger import create_logger
-
+from time import gmtime, strftime
 import argparse
 
 
@@ -221,19 +221,18 @@ def eval_epoch(logger, loader, model, split='val'):
             batch_seg.x = torch.cat((batch_seg.op_feats, batch_seg.op_emb * model.op_weights, batch_seg.config_feats * model.config_weights), dim=-1)
             batch_seg.x = model.linear_map(batch_seg.x)
         
-            module_len = len(list(model.model.children()))
-            for i, module in enumerate(model.model.children()):
+            module_len = len(list(model.model.model.children()))
+            for i, module in enumerate(model.model.model.children()):
                 if i < module_len - 1:
                     batch_seg = module(batch_seg)
                 if i == module_len - 1:
                     batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
             graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
-            for i, module in enumerate(model.model.children()):
+            for i, module in enumerate(model.model.model.children()):
                 if i == module_len - 1:
-                    res = module.layer_post_mp(graph_embed)
+                    res = module(graph_embed)
                     res_list.append(res)
         res_list = torch.cat(res_list, dim=0)
-        print(res_list.shape)
         logging.info(res_list.shape)
         pred = torch.zeros(len(batch_list), len(data.y), 1).to(torch.device(cfg.device))
         part_cnt = 0
@@ -245,8 +244,13 @@ def eval_epoch(logger, loader, model, split='val'):
         ans = torch.argsort(pred, dim = 1).squeeze(-1)
         predictions = ans.cpu().detach().numpy()
         results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
+        filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
         df = pd.DataFrame(results)
-        df.to_csv('./results.csv')
+        os.makedirs('./outputs', exist_ok = True)
+        s = strftime("%a_%d_%b_%H_%M", gmtime())
+        save_name = 'results_' + s + '_' + cfg.source + '_' + cfg.search + '.csv'
+        save_path = os.path.join('./outputs', save_name)
+        df.to_csv(save_path, index = False)
         
         # pred = pred.view(num_sample_config)
         # true = true.view(num_sample_config)
