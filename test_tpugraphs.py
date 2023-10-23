@@ -35,7 +35,10 @@ from graphgps.finetuning import load_pretrained_model_cfg, \
 from graphgps.logger import create_logger
 from time import gmtime, strftime
 import argparse
-
+import pandas as pd
+import os.path as osp
+import glob
+import time
 
 def parse_args() -> argparse.Namespace:
     r"""Parses the command line arguments."""
@@ -245,10 +248,10 @@ def eval_epoch(logger, loader, model, split='val'):
         predictions = ans.cpu().detach().numpy()
         results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
         filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
-        df = pd.DataFrame(results)
+        df = pd.DataFrame({'ID':filenames, 'TopConfigs': results)
         os.makedirs('./outputs', exist_ok = True)
-        s = strftime("%a_%d_%b_%H_%M", gmtime())
-        save_name = 'results_' + s + '_' + cfg.source + '_' + cfg.search + '.csv'
+        millis = int(time.time() * 1000)
+        save_name = 'results_' + millis + '_' + cfg.source + '_' + cfg.search + '.csv'
         save_path = os.path.join('./outputs', save_name)
         df.to_csv(save_path, index = False)
         
