@@ -249,6 +249,9 @@ def eval_epoch(logger, loader, model, split='val'):
         predictions = ans.cpu().detach().numpy()
         results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
         filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
+        print(os.path.join(loader.dataset.raw_paths[0], 'test'))
+        print(len(filenames))
+        print(len(results))
         df = pd.DataFrame({'ID':filenames, 'TopConfigs': results})
         os.makedirs('./outputs', exist_ok = True)
         millis = int(time.time() * 1000)
