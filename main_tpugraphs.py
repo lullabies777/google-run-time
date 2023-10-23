@@ -26,7 +26,10 @@ from time import gmtime, strftime
 from graphgps.finetuning import load_pretrained_model_cfg, \
     init_model_from_pretrained
 from graphgps.logger import create_logger
-
+import glob
+import os.path as osp
+import numpy as np
+import pandas as pd
 
 def new_optimizer_config(cfg):
     return OptimizerConfig(optimizer=cfg.optim.optimizer,
@@ -149,6 +152,13 @@ if __name__ == '__main__':
         # Set machine learning pipeline
         model = create_model() # Standard GCN/SAGE
         loaders = create_loader()
+        # check loader
+        print('Check loader...')
+        print(os.path.join(loaders[0].dataset.raw_paths[0]))
+        filenames = glob.glob(osp.join(os.path.join(loaders[0].dataset.raw_paths[0], 'train'), '*.npz'))
+        tmp = np.load(filenames[0])
+        assert sum(loaders[0].dataset[0].y == torch.tensor(tmp['config_runtime'])) == len(loaders[0].dataset[0].y)\
+        print('Checked!!!')
         loggers = create_logger()
         linear_map_dim = loaders[0].dataset[0].op_feats.shape[1] + cfg.gnn.dim_in + 18
         model = TPUModel(model, linear_map_dim) # Parameters associated with the TPU dataset before feeding into GCN/SAGE

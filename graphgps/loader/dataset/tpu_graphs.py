@@ -768,6 +768,7 @@ class TPUGraphs(InMemoryDataset):
         op_feats_std = torch.std(self.data.op_feats, dim=0, keepdim=True)
         op_feats_std[op_feats_std < 1e-6] = 1
         self.data.op_feats = (self.data.op_feats - op_feats_mean) / op_feats_std
+        
     
     @property
     def processed_dir(self) -> str:
