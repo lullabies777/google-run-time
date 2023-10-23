@@ -59,7 +59,7 @@ def custom_set_out_dir(cfg, cfg_fname, name_tag):
     # run_name += f"-{name_tag}" if name_tag else ""
     # cfg.out_dir = os.path.join(cfg.out_dir, run_name)
     s = strftime("%a_%d_%b_%H_%M", gmtime())
-    cfg.out_dir = f"../results_{cfg.source}_{cfg.search}_" + s
+    cfg.out_dir = f"./results/results_{cfg.source}_{cfg.search}/{s}"
 
 
 def custom_set_run_dir(cfg, run_id):
@@ -74,7 +74,8 @@ def custom_set_run_dir(cfg, run_id):
     if cfg.train.auto_resume:
         os.makedirs(cfg.run_dir, exist_ok=True)
     else:
-        makedirs_rm_exist(cfg.run_dir)
+        # makedirs_rm_exist(cfg.run_dir)
+        os.makedirs(cfg.run_dir, exist_ok=True)
 
 
 def run_loop_settings():
