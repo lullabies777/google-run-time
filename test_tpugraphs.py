@@ -39,6 +39,7 @@ import pandas as pd
 import os.path as osp
 import glob
 import time
+from tqdm import tqdm
 
 def parse_args() -> argparse.Namespace:
     r"""Parses the command line arguments."""
@@ -215,7 +216,7 @@ def eval_epoch(logger, loader, model, split='val'):
                         batch_seg_list.append([])
                     batch_seg_list[-1].append(unfold_g)
         res_list = []
-        for batch_seg in batch_seg_list:
+        for batch_seg in tqdm(batch_seg_list):
             batch_seg = Batch.from_data_list(batch_seg)
             batch_seg.to(torch.device(cfg.device))
             true = true.to(torch.device(cfg.device))
@@ -248,7 +249,7 @@ def eval_epoch(logger, loader, model, split='val'):
         predictions = ans.cpu().detach().numpy()
         results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
         filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
-        df = pd.DataFrame({'ID':filenames, 'TopConfigs': results)
+        df = pd.DataFrame({'ID':filenames, 'TopConfigs': results})
         os.makedirs('./outputs', exist_ok = True)
         millis = int(time.time() * 1000)
         save_name = 'results_' + millis + '_' + cfg.source + '_' + cfg.search + '.csv'
