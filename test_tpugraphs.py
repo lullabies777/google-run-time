@@ -176,7 +176,7 @@ def preprocess_batch(batch, model, num_sample_configs):
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    for batch in tqdm(loader):
+    for batch in loader:
         num_sample_config = 1000
         batch = preprocess_batch(batch, model, num_sample_config)
         batch.split = split
@@ -185,7 +185,7 @@ def eval_epoch(logger, loader, model, split='val'):
         batch_seg_list = []
         batch_num_parts = []
         cnt = 0
-        for i in range(len(batch_list)):
+        for i in tqdm(range(len(batch_list))):
             num_parts = len(batch_list[i].partptr) - 1
             batch_num_parts.append(num_parts)
             for j in range(num_parts):
@@ -252,10 +252,11 @@ def eval_epoch(logger, loader, model, split='val'):
         print(os.path.join(loader.dataset.raw_paths[0], 'test'))
         print(len(filenames))
         print(len(results))
+        
         df = pd.DataFrame({'ID':filenames, 'TopConfigs': results})
         os.makedirs('./outputs', exist_ok = True)
         millis = int(time.time() * 1000)
-        save_name = 'results_' + millis + '_' + cfg.source + '_' + cfg.search + '.csv'
+        save_name = 'results_' + str(millis) + '_' + cfg.source + '_' + cfg.search + '.csv'
         save_path = os.path.join('./outputs', save_name)
         df.to_csv(save_path, index = False)
         
