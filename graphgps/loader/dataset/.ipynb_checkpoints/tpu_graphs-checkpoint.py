@@ -6,12 +6,13 @@ import glob
 import os.path as osp
 import numpy as np
 import torch
-from torch_geometric.data import (Data, download_url,
+from torch_geometric.data import (Dataset, Data, download_url,
                                   extract_tar, extract_zip)
 from torch_geometric.utils import remove_isolated_nodes
 from torch_sparse import SparseTensor
 from tqdm import tqdm
 from torch_geometric.graphgym.config import cfg
+
 from torch_geometric.data import InMemoryDataset
 
 # import copy
@@ -425,17 +426,17 @@ from torch_geometric.data import InMemoryDataset
 #     return out
 
 
-# def to_list(value: Any) -> Sequence:
-#     if isinstance(value, Sequence) and not isinstance(value, str):
-#         return value
-#     else:
-#         return [value]
+def to_list(value: Any) -> Sequence:
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        return value
+    else:
+        return [value]
 
 
-# def files_exist(files: List[str]) -> bool:
-#     # NOTE: We return `False` in case `files` is empty, leading to a
-#     # re-processing of files on every instantiation.
-#     return len(files) != 0 and all([osp.exists(f) for f in files])
+def files_exist(files: List[str]) -> bool:
+    # NOTE: We return `False` in case `files` is empty, leading to a
+    # re-processing of files on every instantiation.
+    return len(files) != 0 and all([osp.exists(f) for f in files])
 
 
 # def _repr(obj: Any) -> str:
