@@ -35,9 +35,9 @@ class CustomGNN(torch.nn.Module):
         layers = []
         for i in range(cfg.gnn.layers_mp):
             if i == 0:
-                layer_cfg = new_layer_config(dim_in, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
+                layer_cfg = new_layer_config(dim_in, cfg.gnn.dim_inner // cfg.heads, 1, has_act=True, has_bias=True, cfg=cfg)
             else:
-                layer_cfg = new_layer_config(cfg.gnn.dim_inner, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
+                layer_cfg = new_layer_config(cfg.gnn.dim_inner, cfg.gnn.dim_inner // cfg.heads, 1, has_act=True, has_bias=True, cfg=cfg)
             if cfg.gnn.layer_type == 'gatv2conv':
                 layers.append(conv_model(layer_cfg, cfg.heads))
             else:
