@@ -258,7 +258,7 @@ def eval_epoch(logger, loader, model, split='val'):
         for i, num_parts in enumerate(batch_num_parts):
             for _ in range(num_parts):
                 for j in range(num_sample_config):
-                    pred[i + acc_idx, j, :] += res[part_cnt, :]
+                    pred[i, j, :] += res[part_cnt, :]
                     part_cnt += 1
         _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
         _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
