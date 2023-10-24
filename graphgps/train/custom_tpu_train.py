@@ -194,7 +194,7 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    with torch.zero_grad():
+    with torch.no_grad():
         num_sample_config = cfg.train.num_sample_config
         pred_list = []
         true_list = []
