@@ -167,6 +167,7 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
             loss, pred_score = compute_loss(pred, true)
             _true = true.detach().to('cpu', non_blocking=True)
             _pred = pred_score.detach().to('cpu', non_blocking=True)
+        loss /= batch_accumulation
         loss.backward()
         # Parameters update after accumulating gradients for given num. batches.
         if ((iter + 1) % batch_accumulation == 0) or (iter + 1 == len(loader)):
@@ -194,6 +195,8 @@ def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
     num_sample_config = cfg.train.num_sample_config
+    pred_list = []
+    true_list = []
     for batch in loader:
         batch, _ = preprocess_batch(batch, model, num_sample_config)
         batch.split = split
@@ -250,38 +253,41 @@ def eval_epoch(logger, loader, model, split='val'):
             if i == module_len - 1:
                 res = module(graph_embed)
         #         res = module.post_mp.layer_post_mp(graph_embed)
-        pred = torch.zeros(len(loader.dataset), len(data.y), 1).to(torch.device(cfg.device))
         part_cnt = 0
+        pred = torch.zeros(true.shape[0], len(data.y), 1).to(torch.device(cfg.device))
         for i, num_parts in enumerate(batch_num_parts):
             for _ in range(num_parts):
                 for j in range(num_sample_config):
-                    pred[i, j, :] += res[part_cnt, :]
+                    pred[i + acc_idx, j, :] += res[part_cnt, :]
                     part_cnt += 1
+        _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
+        _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
+        pred_list.append(_pred)
+        true_list.append(_true)
+        
         batch_num_parts = torch.Tensor(batch_num_parts).to(torch.device(cfg.device))
         batch_num_parts = batch_num_parts.view(-1, 1)
         extra_stats = {}
-        if cfg.dataset.name == 'ogbg-code2':
-            loss, pred_score = subtoken_cross_entropy(pred, true)
-            _true = true
-            _pred = pred_score
-        elif cfg.dataset.name == 'TPUGraphs':
-            pred = pred.view(-1, num_sample_config)
-            true = true.view(-1, num_sample_config)
-            loss = pairwise_hinge_loss_batch(pred, true, cfg.margin)
-            _true = true.detach().to('cpu', non_blocking=True)
-            _pred = pred.detach().to('cpu', non_blocking=True)
-        else:
-            loss, pred_score = compute_loss(pred, true)
-            _true = true.detach().to('cpu', non_blocking=True)
-            _pred = pred_score.detach().to('cpu', non_blocking=True)
-        logger.update_stats(true=_true,
-                            pred=_pred,
-                            loss=loss.detach().cpu().item(),
-                            lr=0, time_used=time.time() - time_start,
-                            params=cfg.params,
-                            dataset_name=cfg.dataset.name,
-                            **extra_stats)
-        time_start = time.time()
+    if cfg.dataset.name == 'ogbg-code2':
+        loss, pred_score = subtoken_cross_entropy(pred, true)
+        _true = true
+        _pred = pred_score
+    elif cfg.dataset.name == 'TPUGraphs':
+        pred = torch.cat(pred_list)
+        true = torch.cat(true_list)
+        loss = pairwise_hinge_loss_batch(pred, true, cfg.margin)
+    else:
+        loss, pred_score = compute_loss(pred, true)
+        _true = true.detach().to('cpu', non_blocking=True)
+        _pred = pred_score.detach().to('cpu', non_blocking=True)
+    logger.update_stats(true=true,
+                        pred=pred,
+                        loss=loss.detach().cpu().item(),
+                        lr=0, time_used=time.time() - time_start,
+                        params=cfg.params,
+                        dataset_name=cfg.dataset.name,
+                        **extra_stats)
+    time_start = time.time()
 
 
 @register_train('custom_tpu')
