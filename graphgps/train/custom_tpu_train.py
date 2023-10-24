@@ -263,8 +263,6 @@ def eval_epoch(logger, loader, model, split='val'):
                         part_cnt += 1
             _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
             _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
-            print(_pred.shape)
-            print(_true.shape)
             pred_list.append(_pred)
             true_list.append(_true)
 
