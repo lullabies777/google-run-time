@@ -254,7 +254,7 @@ def eval_epoch(logger, loader, model, split='val'):
                 res = module(graph_embed)
         #         res = module.post_mp.layer_post_mp(graph_embed)
         part_cnt = 0
-        pred = torch.zeros(true.shape[0], len(data.y), 1).to(torch.device(cfg.device))
+        pred = torch.zeros(true.shape[0] // num_sample_config, len(data.y), 1).to(torch.device(cfg.device))
         for i, num_parts in enumerate(batch_num_parts):
             for _ in range(num_parts):
                 for j in range(num_sample_config):
@@ -262,6 +262,8 @@ def eval_epoch(logger, loader, model, split='val'):
                     part_cnt += 1
         _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
         _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
+        print(_pred.shape)
+        print(_true.shape)
         pred_list.append(_pred)
         true_list.append(_true)
         
