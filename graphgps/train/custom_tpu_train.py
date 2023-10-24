@@ -194,102 +194,103 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    num_sample_config = cfg.train.num_sample_config
-    pred_list = []
-    true_list = []
-    for batch in loader:
-        batch, _ = preprocess_batch(batch, model, num_sample_config)
-        batch.split = split
-        true = batch.y
-        batch_list = batch.to_data_list()
-        batch_seg = []
-        batch_num_parts = []
-        for i in range(len(batch_list)):
-            num_parts = len(batch_list[i].partptr) - 1
-            batch_num_parts.append(num_parts)
-            for j in range(num_parts):
-                start = int(batch_list[i].partptr.numpy()[j])
-                length = int(batch_list[i].partptr.numpy()[j+1]) - start
+    with torch.zero_grad():
+        num_sample_config = cfg.train.num_sample_config
+        pred_list = []
+        true_list = []
+        for batch in loader:
+            batch, _ = preprocess_batch(batch, model, num_sample_config)
+            batch.split = split
+            true = batch.y
+            batch_list = batch.to_data_list()
+            batch_seg = []
+            batch_num_parts = []
+            for i in range(len(batch_list)):
+                num_parts = len(batch_list[i].partptr) - 1
+                batch_num_parts.append(num_parts)
+                for j in range(num_parts):
+                    start = int(batch_list[i].partptr.numpy()[j])
+                    length = int(batch_list[i].partptr.numpy()[j+1]) - start
 
-                N, E = batch_list[i].num_nodes, batch_list[i].num_edges
-                data = copy.copy(batch_list[i])
-                del data.num_nodes
-                adj, data.adj = data.adj, None
+                    N, E = batch_list[i].num_nodes, batch_list[i].num_edges
+                    data = copy.copy(batch_list[i])
+                    del data.num_nodes
+                    adj, data.adj = data.adj, None
 
-                adj = adj.narrow(0, start, length).narrow(1, start, length)
-                edge_idx = adj.storage.value()
+                    adj = adj.narrow(0, start, length).narrow(1, start, length)
+                    edge_idx = adj.storage.value()
 
-                for key, item in data:
-                    if isinstance(item, torch.Tensor) and item.size(0) == N:
-                        data[key] = item.narrow(0, start, length)
-                    elif isinstance(item, torch.Tensor) and item.size(0) == E:
-                        data[key] = item[edge_idx]
-                    else:
-                        data[key] = item
+                    for key, item in data:
+                        if isinstance(item, torch.Tensor) and item.size(0) == N:
+                            data[key] = item.narrow(0, start, length)
+                        elif isinstance(item, torch.Tensor) and item.size(0) == E:
+                            data[key] = item[edge_idx]
+                        else:
+                            data[key] = item
 
-                row, col, _ = adj.coo()
-                data.edge_index = torch.stack([row, col], dim=0)
-                for k in range(len(data.y)):
-                    unfold_g = Data(edge_index=data.edge_index, op_feats=data.op_feats, op_code=data.op_code, config_feats=data.config_feats_full[:, k, :], num_nodes=length)
-                    batch_seg.append(unfold_g)
-        batch_seg = Batch.from_data_list(batch_seg)
-        batch_seg.to(torch.device(cfg.device))
-        true = true.to(torch.device(cfg.device))
-        # more preprocessing
-        # batch_train.config_feats = model.config_feats_transform(batch_train.config_feats)
-        batch_seg.op_emb = model.emb(batch_seg.op_code.long())
-        # batch_train.op_feats = model.op_feats_transform(batch_train.op_feats)
-        batch_seg.x = torch.cat((batch_seg.op_feats, model.op_weights * batch_seg.op_emb, batch_seg.config_feats * model.config_weights), dim=-1)
-        batch_seg.x = model.linear_map(batch_seg.x)
-       
-        module_len = len(list(model.model.model.children()))
-        for i, module in enumerate(model.model.model.children()):
-            if i < module_len - 1:
-                batch_seg = module(batch_seg)
-            if i == module_len - 1:
-                batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
-        graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
-        for i, module in enumerate(model.model.model.children()):
-            if i == module_len - 1:
-                res = module(graph_embed)
-        #         res = module.post_mp.layer_post_mp(graph_embed)
-        part_cnt = 0
-        pred = torch.zeros(true.shape[0] // num_sample_config, len(data.y), 1).to(torch.device(cfg.device))
-        for i, num_parts in enumerate(batch_num_parts):
-            for _ in range(num_parts):
-                for j in range(num_sample_config):
-                    pred[i, j, :] += res[part_cnt, :]
-                    part_cnt += 1
-        _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
-        _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
-        print(_pred.shape)
-        print(_true.shape)
-        pred_list.append(_pred)
-        true_list.append(_true)
-        
-        batch_num_parts = torch.Tensor(batch_num_parts).to(torch.device(cfg.device))
-        batch_num_parts = batch_num_parts.view(-1, 1)
-        extra_stats = {}
-    if cfg.dataset.name == 'ogbg-code2':
-        loss, pred_score = subtoken_cross_entropy(pred, true)
-        _true = true
-        _pred = pred_score
-    elif cfg.dataset.name == 'TPUGraphs':
-        pred = torch.cat(pred_list)
-        true = torch.cat(true_list)
-        loss = pairwise_hinge_loss_batch(pred, true, cfg.margin)
-    else:
-        loss, pred_score = compute_loss(pred, true)
-        _true = true.detach().to('cpu', non_blocking=True)
-        _pred = pred_score.detach().to('cpu', non_blocking=True)
-    logger.update_stats(true=true,
-                        pred=pred,
-                        loss=loss.detach().cpu().item(),
-                        lr=0, time_used=time.time() - time_start,
-                        params=cfg.params,
-                        dataset_name=cfg.dataset.name,
-                        **extra_stats)
-    time_start = time.time()
+                    row, col, _ = adj.coo()
+                    data.edge_index = torch.stack([row, col], dim=0)
+                    for k in range(len(data.y)):
+                        unfold_g = Data(edge_index=data.edge_index, op_feats=data.op_feats, op_code=data.op_code, config_feats=data.config_feats_full[:, k, :], num_nodes=length)
+                        batch_seg.append(unfold_g)
+            batch_seg = Batch.from_data_list(batch_seg)
+            batch_seg.to(torch.device(cfg.device))
+            true = true.to(torch.device(cfg.device))
+            # more preprocessing
+            # batch_train.config_feats = model.config_feats_transform(batch_train.config_feats)
+            batch_seg.op_emb = model.emb(batch_seg.op_code.long())
+            # batch_train.op_feats = model.op_feats_transform(batch_train.op_feats)
+            batch_seg.x = torch.cat((batch_seg.op_feats, model.op_weights * batch_seg.op_emb, batch_seg.config_feats * model.config_weights), dim=-1)
+            batch_seg.x = model.linear_map(batch_seg.x)
+
+            module_len = len(list(model.model.model.children()))
+            for i, module in enumerate(model.model.model.children()):
+                if i < module_len - 1:
+                    batch_seg = module(batch_seg)
+                if i == module_len - 1:
+                    batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
+            graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
+            for i, module in enumerate(model.model.model.children()):
+                if i == module_len - 1:
+                    res = module(graph_embed)
+            #         res = module.post_mp.layer_post_mp(graph_embed)
+            part_cnt = 0
+            pred = torch.zeros(true.shape[0] // num_sample_config, len(data.y), 1).to(torch.device(cfg.device))
+            for i, num_parts in enumerate(batch_num_parts):
+                for _ in range(num_parts):
+                    for j in range(num_sample_config):
+                        pred[i, j, :] += res[part_cnt, :]
+                        part_cnt += 1
+            _pred = pred.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
+            _true = true.view(-1, num_sample_config).detach().to('cpu', non_blocking=True)
+            print(_pred.shape)
+            print(_true.shape)
+            pred_list.append(_pred)
+            true_list.append(_true)
+
+            batch_num_parts = torch.Tensor(batch_num_parts).to(torch.device(cfg.device))
+            batch_num_parts = batch_num_parts.view(-1, 1)
+            extra_stats = {}
+        if cfg.dataset.name == 'ogbg-code2':
+            loss, pred_score = subtoken_cross_entropy(pred, true)
+            _true = true
+            _pred = pred_score
+        elif cfg.dataset.name == 'TPUGraphs':
+            pred = torch.cat(pred_list)
+            true = torch.cat(true_list)
+            loss = pairwise_hinge_loss_batch(pred, true, cfg.margin)
+        else:
+            loss, pred_score = compute_loss(pred, true)
+            _true = true.detach().to('cpu', non_blocking=True)
+            _pred = pred_score.detach().to('cpu', non_blocking=True)
+        logger.update_stats(true=true,
+                            pred=pred,
+                            loss=loss.detach().cpu().item(),
+                            lr=0, time_used=time.time() - time_start,
+                            params=cfg.params,
+                            dataset_name=cfg.dataset.name,
+                            **extra_stats)
+        time_start = time.time()
 
 
 @register_train('custom_tpu')
