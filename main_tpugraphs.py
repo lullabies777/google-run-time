@@ -6,7 +6,7 @@ import logging
 import graphgps  # noqa, register custom modules
 from graphgps.optimizer.extra_optimizers import ExtendedSchedulerConfig
 
-from torch_geometric.graphgym.cmd_args import parse_args
+import argparse
 from torch_geometric.graphgym.config import (cfg, dump_cfg,
                                              set_cfg, load_cfg,
                                              makedirs_rm_exist)
@@ -30,6 +30,26 @@ import glob
 import os.path as osp
 import numpy as np
 import pandas as pd
+
+
+
+
+def parse_args() -> argparse.Namespace:
+    r"""Parses the command line arguments."""
+    parser = argparse.ArgumentParser(description='GraphGym')
+
+    parser.add_argument('--cfg', dest='cfg_file', type=str, required=True,
+                        help='The configuration file path.')
+    parser.add_argument('--repeat', type=int, default=1,
+                        help='The number of repeated jobs.')
+    parser.add_argument('--mark_done', action='store_true',
+                        help='Mark yaml as done after a job has finished.')
+    parser.add_argument('opts', default=None, nargs=argparse.REMAINDER,
+                        help='See graphgym/config.py for remaining options.')
+    # parser.add_argument('--margin', default = 0.1, type = float)
+    # parser.add_argument('--heads', default = 4, type = int)
+
+    return parser.parse_args()
 
 def new_optimizer_config(cfg):
     return OptimizerConfig(optimizer=cfg.optim.optimizer,

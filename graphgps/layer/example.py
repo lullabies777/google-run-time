@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import Parameter
-
+import torch_geometric as pyg
 from torch_geometric.graphgym.config import cfg
 from torch_geometric.graphgym.register import register_layer
 from torch_geometric.nn.conv import MessagePassing
@@ -10,6 +10,22 @@ from torch_geometric.nn.inits import glorot, zeros
 # Note: A registered GNN layer should take 'batch' as input
 # and 'batch' as output
 
+@register_layer('gatv2conv')
+class GateV2Conv(torch.nn.Module):
+    r"""A GraphSAGE layer."""
+    def __init__(self, layer_config, heads):
+        super().__init__()
+        self.model = pyg.nn.conv.GATv2Conv(
+            layer_config.dim_in,
+            layer_config.dim_out,
+            bias=layer_config.has_bias,
+            heads = heads
+        )
+
+    def forward(self, batch):
+        batch.x = self.model(batch.x, batch.edge_index)
+        return batch
+    
 
 # Example 1: Directly define a GraphGym format Conv
 # take 'batch' as input and 'batch' as output

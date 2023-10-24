@@ -38,7 +38,10 @@ class CustomGNN(torch.nn.Module):
                 layer_cfg = new_layer_config(dim_in, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
             else:
                 layer_cfg = new_layer_config(cfg.gnn.dim_inner, cfg.gnn.dim_inner, 1, has_act=True, has_bias=True, cfg=cfg)
-            layers.append(conv_model(layer_cfg))
+            if cfg.gnn.layer_type == 'gatv2conv':
+                layers.append(conv_model(layer_cfg, cfg.heads))
+            else:
+                layers.append(conv_model(layer_cfg))
         self.gnn_layers = torch.nn.Sequential(*layers)
 
         # GNNHead = register.head_dict[cfg.gnn.head]
@@ -54,6 +57,8 @@ class CustomGNN(torch.nn.Module):
             return GINEConvLayer
         elif model_type == 'sageconv':
             return SAGEConv
+        elif model_type == 'gatv2conv':
+            return register.layer_dict[model_type]
         else:
             raise ValueError("Model {} unavailable".format(model_type))
 

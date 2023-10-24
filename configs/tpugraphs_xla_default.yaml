@@ -7,11 +7,11 @@ dataset:
   transductive: False
 train:
   mode: custom_tpu
-  batch_size: 32
+  batch_size: 8
   eval_period: 1
   ckpt_period: 100
   sampler: full_batch
-  num_sample_config: 64
+  num_sample_config: 256
   ckpt_best: True
 model:
   type: custom_tpu_gnn
@@ -19,11 +19,11 @@ model:
   edge_decoding: dot
   graph_pooling: add
 gnn:
-  layers_pre_mp: 0
+  layers_pre_mp: 1
   layers_mp: 4
   layers_post_mp: 3
   dim_inner: 256
-  layer_type: sageconv
+  layer_type: gatv2conv
   stage_type: skipsum
   batchnorm: False
   act: prelu
@@ -34,13 +34,16 @@ gnn:
 optim:
   optimizer: adam
   base_lr: 0.0001
-  max_epoch: 2000
+  max_epoch: 1000
+  batch_accumulation: 2
 share:
   dim_in: 286
 device: cuda
 source: "xla"
 search: "default"
 seed: 777
+margin: 1
+heads: 4
 wandb:
   use: True
   project: "Google Runtime"

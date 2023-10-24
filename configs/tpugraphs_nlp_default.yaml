@@ -7,11 +7,11 @@ dataset:
   transductive: False
 train:
   mode: custom_tpu
-  batch_size: 32
+  batch_size: 8
   eval_period: 1
   ckpt_period: 100
   sampler: full_batch
-  num_sample_config: 128
+  num_sample_config: 256
   ckpt_best: True
 model:
   type: custom_tpu_gnn
@@ -35,12 +35,15 @@ optim:
   optimizer: adam
   base_lr: 0.0001
   max_epoch: 2000
+  batch_accumulation: 2
 share:
   dim_in: 286
 device: cuda
 source: "nlp"
 search: "default"
 seed: 777
+margin: 0.1
+heads: 4
 wandb:
   use: True
   project: "Google Runtime"

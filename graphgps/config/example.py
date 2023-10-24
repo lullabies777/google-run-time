@@ -45,3 +45,7 @@ def set_cfg_example(cfg):
     cfg.gnn.dim_in = 128
     
     cfg.train.num_sample_config = 32
+    
+    cfg.margin = 0.1
+    
+    cfg.heads = 4
