@@ -172,7 +172,7 @@ def preprocess_batch(batch, model, num_sample_configs):
         g.config_feats_full[g.config_idx, ...] += g.config_feats
         g.adj = SparseTensor(row=g.edge_index[0], col=g.edge_index[1], sparse_sizes=(g.num_nodes, g.num_nodes))
         processed_batch_list.append(g)
-    return Batch.from_data_list(processed_batch_list), num_sample_config
+    return Batch.from_data_list(processed_batch_list), num_sample_configs
 
 @torch.no_grad()
 def eval_epoch(logger, loader, model, split='val'):
