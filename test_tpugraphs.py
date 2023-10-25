@@ -162,7 +162,8 @@ def preprocess_batch(batch, model, num_sample_configs):
     processed_batch_list = []
     for g in batch_list:
         # sample_idx = torch.randint(0, g.num_config.item(), (num_sample_configs,))
-        num_sample_configs = 1000
+        num_sample_configs = g.num_config.item()
+        # num_sample_configs = 1000
         # g.y = g.y[sample_idx]
         g.y = g.y[:num_sample_configs]
         g.config_feats = g.config_feats.view(g.num_config, g.num_config_idx, -1)[:num_sample_configs,]
@@ -171,111 +172,114 @@ def preprocess_batch(batch, model, num_sample_configs):
         g.config_feats_full[g.config_idx, ...] += g.config_feats
         g.adj = SparseTensor(row=g.edge_index[0], col=g.edge_index[1], sparse_sizes=(g.num_nodes, g.num_nodes))
         processed_batch_list.append(g)
-    return Batch.from_data_list(processed_batch_list)
+    return Batch.from_data_list(processed_batch_list), num_sample_config
 
 @torch.no_grad()
 def eval_epoch(logger, loader, model, split='val'):
     model.eval()
     time_start = time.time()
-    for batch in loader:
-        num_sample_config = 1000
-        batch = preprocess_batch(batch, model, num_sample_config)
-        batch.split = split
-        true = batch.y
-        batch_list = batch.to_data_list()
-        batch_seg_list = []
-        batch_num_parts = []
-        cnt = 0
-        for i in tqdm(range(len(batch_list))):
-            num_parts = len(batch_list[i].partptr) - 1
-            batch_num_parts.append(num_parts)
-            for j in range(num_parts):
-                start = int(batch_list[i].partptr.numpy()[j])
-                length = int(batch_list[i].partptr.numpy()[j+1]) - start
+    final_results = []
+    with torch.no_grad():
+        for batch in loader:
+            num_sample_config = 1000
+            batch, num_sample_config = preprocess_batch(batch, model, num_sample_config)
+            batch.split = split
+            true = batch.y
+            batch_list = batch.to_data_list()
+            batch_seg_list = []
+            batch_num_parts = []
+            cnt = 0
+            for i in tqdm(range(len(batch_list))):
+                num_parts = len(batch_list[i].partptr) - 1
+                batch_num_parts.append(num_parts)
+                for j in range(num_parts):
+                    start = int(batch_list[i].partptr.numpy()[j])
+                    length = int(batch_list[i].partptr.numpy()[j+1]) - start
 
-                N, E = batch_list[i].num_nodes, batch_list[i].num_edges
-                data = copy.copy(batch_list[i])
-                del data.num_nodes
-                adj, data.adj = data.adj, None
+                    N, E = batch_list[i].num_nodes, batch_list[i].num_edges
+                    data = copy.copy(batch_list[i])
+                    del data.num_nodes
+                    adj, data.adj = data.adj, None
 
-                adj = adj.narrow(0, start, length).narrow(1, start, length)
-                edge_idx = adj.storage.value()
+                    adj = adj.narrow(0, start, length).narrow(1, start, length)
+                    edge_idx = adj.storage.value()
 
-                for key, item in data:
-                    if isinstance(item, torch.Tensor) and item.size(0) == N:
-                        data[key] = item.narrow(0, start, length)
-                    elif isinstance(item, torch.Tensor) and item.size(0) == E:
-                        data[key] = item[edge_idx]
-                    else:
-                        data[key] = item
+                    for key, item in data:
+                        if isinstance(item, torch.Tensor) and item.size(0) == N:
+                            data[key] = item.narrow(0, start, length)
+                        elif isinstance(item, torch.Tensor) and item.size(0) == E:
+                            data[key] = item[edge_idx]
+                        else:
+                            data[key] = item
 
-                row, col, _ = adj.coo()
-                data.edge_index = torch.stack([row, col], dim=0)
-                for k in range(len(data.y)):
-                    unfold_g = Data(edge_index=data.edge_index, op_feats=data.op_feats, op_code=data.op_code, config_feats=data.config_feats_full[:, k, :], num_nodes=length)
-                    if cnt % 32 == 0:
-                        batch_seg_list.append([])
-                    batch_seg_list[-1].append(unfold_g)
-        res_list = []
-        for batch_seg in tqdm(batch_seg_list):
-            batch_seg = Batch.from_data_list(batch_seg)
-            batch_seg.to(torch.device(cfg.device))
-            true = true.to(torch.device(cfg.device))
-            # more preprocessing
-            batch_seg.op_emb = model.emb(batch_seg.op_code.long())
-            batch_seg.x = torch.cat((batch_seg.op_feats, batch_seg.op_emb * model.op_weights, batch_seg.config_feats * model.config_weights), dim=-1)
-            batch_seg.x = model.linear_map(batch_seg.x)
-        
-            module_len = len(list(model.model.model.children()))
-            for i, module in enumerate(model.model.model.children()):
-                if i < module_len - 1:
-                    batch_seg = module(batch_seg)
-                if i == module_len - 1:
-                    batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
-            graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
-            for i, module in enumerate(model.model.model.children()):
-                if i == module_len - 1:
-                    res = module(graph_embed)
-                    res_list.append(res)
-        res_list = torch.cat(res_list, dim=0)
-        logging.info(res_list.shape)
-        pred = torch.zeros(len(batch_list), len(data.y), 1).to(torch.device(cfg.device))
-        part_cnt = 0
-        for i, num_parts in enumerate(batch_num_parts):
-            for _ in range(num_parts):
-                for j in range(num_sample_config):
-                    pred[i, j, :] += res_list[part_cnt, :]
-                    part_cnt += 1
-        ans = torch.argsort(pred, dim = 1).squeeze(-1)
-        predictions = ans.cpu().detach().numpy()
-        results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
-        filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
-        print(os.path.join(loader.dataset.raw_paths[0], 'test'))
-        print(len(filenames))
-        print(len(results))
-        
-        df = pd.DataFrame({'ID':filenames, 'TopConfigs': results})
-        os.makedirs('./outputs', exist_ok = True)
-        millis = int(time.time() * 1000)
-        save_name = 'results_' + str(millis) + '_' + cfg.source + '_' + cfg.search + '.csv'
-        save_path = os.path.join('./outputs', save_name)
-        df.to_csv(save_path, index = False)
-        
-        # pred = pred.view(num_sample_config)
-        # true = true.view(num_sample_config)
-        # pred_rank = torch.argsort(pred, dim=-1, descending=False)
-        # true_rank = torch.argsort(true, dim=-1, descending=False)
-        # pred_rank = pred_rank.cpu().numpy()
-        # true_rank = true_rank.cpu().numpy()
-        # true = true.cpu().numpy()
-        # err_1 = (true[pred_rank[0]] - true[true_rank[0]]) / true[true_rank[0]]
-        # err_10 = (np.min(true[pred_rank[:10]]) - true[true_rank[0]]) / true[true_rank[0]]
-        # err_100 = (np.min(true[pred_rank[:100]]) - true[true_rank[0]]) / true[true_rank[0]]
-        # print('top 1 err: ' + str(err_1))
-        # print('top 10 err: ' + str(err_10))
-        # print('top 100 err: ' + str(err_100))
-        # print("kendall:" + str(scipy.stats.kendalltau(pred_rank, true_rank).correlation))
-        time_start = time.time()
+                    row, col, _ = adj.coo()
+                    data.edge_index = torch.stack([row, col], dim=0)
+                    for k in range(len(data.y)):
+                        unfold_g = Data(edge_index=data.edge_index, op_feats=data.op_feats, op_code=data.op_code, config_feats=data.config_feats_full[:, k, :], num_nodes=length)
+                        if cnt % 32 == 0:
+                            batch_seg_list.append([])
+                        batch_seg_list[-1].append(unfold_g)
+            res_list = []
+            for batch_seg in tqdm(batch_seg_list):
+                batch_seg = Batch.from_data_list(batch_seg)
+                batch_seg.to(torch.device(cfg.device))
+                true = true.to(torch.device(cfg.device))
+                # more preprocessing
+                batch_seg.op_emb = model.emb(batch_seg.op_code.long())
+                batch_seg.x = torch.cat((batch_seg.op_feats, batch_seg.op_emb * model.op_weights, batch_seg.config_feats * model.config_weights), dim=-1)
+                batch_seg.x = model.linear_map(batch_seg.x)
+
+                module_len = len(list(model.model.model.children()))
+                for i, module in enumerate(model.model.model.children()):
+                    if i < module_len - 1:
+                        batch_seg = module(batch_seg)
+                    if i == module_len - 1:
+                        batch_seg_embed = tnn.global_max_pool(batch_seg.x, batch_seg.batch) + tnn.global_mean_pool(batch_seg.x, batch_seg.batch)
+                graph_embed = batch_seg_embed / torch.norm(batch_seg_embed, dim=-1, keepdim=True)
+                for i, module in enumerate(model.model.model.children()):
+                    if i == module_len - 1:
+                        res = module(graph_embed)
+                        res_list.append(res)
+            res_list = torch.cat(res_list, dim=0)
+            logging.info(res_list.shape)
+            pred = torch.zeros(len(batch_list), len(data.y), 1).to(torch.device(cfg.device))
+            part_cnt = 0
+            for i, num_parts in enumerate(batch_num_parts):
+                for _ in range(num_parts):
+                    for j in range(num_sample_config):
+                        pred[i, j, :] += res_list[part_cnt, :]
+                        part_cnt += 1
+            ans = torch.argsort(pred, dim = 1).squeeze(-1)
+            predictions = ans.cpu().detach().numpy()
+            results = [",".join(predictions[i].astype(str)) for i in range(len(predictions))]
+            final_results.extend(results)
+    filenames = glob.glob(osp.join(os.path.join(loader.dataset.raw_paths[0], 'test'), '*.npz'))
+    # print(os.path.join(loader.dataset.raw_paths[0], 'test'))
+    # print(len(filenames))
+    # print(len(results))
+
+    df = pd.DataFrame({'ID':filenames, 'TopConfigs': final_results})
+    os.makedirs('./outputs', exist_ok = True)
+    millis = int(time.time() * 1000)
+    save_name = 'results_' + str(millis) + '_' + cfg.source + '_' + cfg.search + '.csv'
+    save_path = os.path.join('./outputs', save_name)
+    df.to_csv(save_path, index = False)
+
+    # pred = pred.view(num_sample_config)
+    # true = true.view(num_sample_config)
+    # pred_rank = torch.argsort(pred, dim=-1, descending=False)
+    # true_rank = torch.argsort(true, dim=-1, descending=False)
+    # pred_rank = pred_rank.cpu().numpy()
+    # true_rank = true_rank.cpu().numpy()
+    # true = true.cpu().numpy()
+    # err_1 = (true[pred_rank[0]] - true[true_rank[0]]) / true[true_rank[0]]
+    # err_10 = (np.min(true[pred_rank[:10]]) - true[true_rank[0]]) / true[true_rank[0]]
+    # err_100 = (np.min(true[pred_rank[:100]]) - true[true_rank[0]]) / true[true_rank[0]]
+    # print('top 1 err: ' + str(err_1))
+    # print('top 10 err: ' + str(err_10))
+    # print('top 100 err: ' + str(err_100))
+    # print("kendall:" + str(scipy.stats.kendalltau(pred_rank, true_rank).correlation))
+    time_start = time.time()
 
 if __name__ == '__main__':
     # Load cmd line args
