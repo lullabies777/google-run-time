@@ -133,7 +133,7 @@ def train_epoch(logger, loader, model, optimizer, scheduler, emb_table, batch_ac
             if i == module_len - 1:
                 graph_embed = module(graph_embed)
         # print(graph_embed.shape)
-        binomial = torch.distributions.binomial.Binomial(probs=0.5)
+        binomial = torch.distributions.binomial.Binomial(probs=cfg.dropout)
         if len(batch_other) > 0:
             batch_other = torch.cat(batch_other, dim=0)
             mask =  binomial.sample((batch_other.shape[0], 1)).to(torch.device(cfg.device))

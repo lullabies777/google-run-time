@@ -49,3 +49,5 @@ def set_cfg_example(cfg):
     cfg.margin = 0.1
     
     cfg.heads = 4
+    
+    cfg.dropout = 0.5
